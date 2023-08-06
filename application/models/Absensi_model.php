@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
-class Absensi_model extends CI_Model 
+class Absensi_model extends CI_Model
 {
     public function get_absen($id_user, $bulan, $tahun)
     {

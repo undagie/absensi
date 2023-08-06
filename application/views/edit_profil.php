@@ -55,13 +55,13 @@
                                 <input type="email" name="email" id="email" value="<?= $user->email ?>" class="form-control" placeholder="Masukan Email" required="reuqired" />
                             </div>
                         </div>
-                        <?php if($this->session->level == 'Karyawan'): ?>
+                        <?php if ($this->session->level == 'Karyawan') : ?>
                             <div class="col-xs-12 col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label for="divisi">Divisi : </label>
                                     <select name="divisi" id="divisi" value="<?= $user->divisi ?>" class="form-control">
                                         <option value="" disabled selected>-- Pilih Divisi --</option>
-                                        <?php foreach($divisi as $d): ?>
+                                        <?php foreach ($divisi as $d) : ?>
                                             <option value="<?= $d->id_divisi ?>" <?= ($d->id_divisi == $user->divisi) ? 'selected' : '' ?>><?= $d->nama_divisi ?></option>
                                         <?php endforeach; ?>
                                     </select>

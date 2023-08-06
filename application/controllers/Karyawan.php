@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
-class Karyawan extends CI_Controller 
+class Karyawan extends CI_Controller
 {
     public function __construct()
     {
@@ -52,7 +52,7 @@ class Karyawan extends CI_Controller
             ];
             $redirect = 'karyawan/create';
         }
-        
+
         $this->session->set_flashdata('response', $response);
         redirect($redirect);
     }
@@ -93,7 +93,7 @@ class Karyawan extends CI_Controller
                 'message' => 'Data Karyawan gagal diubah!'
             ];
         }
-        
+
         $this->session->set_flashdata('response', $response);
         redirect('karyawan');
     }
@@ -113,7 +113,7 @@ class Karyawan extends CI_Controller
                 'message' => 'Data karyawan gagal dihapus!'
             ];
         }
-        
+
         header('Content-Type: application/json');
         echo $response;
     }

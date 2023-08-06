@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 class Karyawan_model extends CI_Model
 {

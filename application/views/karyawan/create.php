@@ -47,7 +47,7 @@
                                 <label for="divisi">Divisi : </label>
                                 <select name="divisi" id="divisi" class="form-control">
                                     <option value="" disabled selected>-- Pilih Divisi --</option>
-                                    <?php foreach($divisi as $d): ?>
+                                    <?php foreach ($divisi as $d) : ?>
                                         <option value="<?= $d->id_divisi ?>"><?= $d->nama_divisi ?></option>
                                     <?php endforeach; ?>
                                 </select>

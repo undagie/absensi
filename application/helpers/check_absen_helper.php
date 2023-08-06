@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 function check_absen_harian()
 {
-    $CI =& get_instance();
+    $CI = &get_instance();
     $id_user = $CI->session->id_user;
     $CI->load->model('Absensi_model', 'absensi');
     $absen_user = $CI->absensi->absen_harian_user($id_user)->num_rows();
@@ -20,7 +20,7 @@ function check_jam($jam, $status, $raw = false)
 {
     if ($jam) {
         $status = ucfirst($status);
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->load->model('Jam_model', 'jam');
         $jam_kerja = $CI->jam->db->where('keterangan', $status)->get('jam')->row();
 

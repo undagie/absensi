@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 class Absensi extends CI_Controller
 {
@@ -93,12 +93,12 @@ class Absensi extends CI_Controller
         $excel = new PHPExcel();
 
         $excel->getProperties()
-                ->setCreator('IndoExpress')
-                ->setLastModifiedBy('IndoExpress')
-                ->setTitle('Data Absensi')
-                ->setSubject('Absensi')
-                ->setDescription('Absensi' . $data['karyawan']->nama . ' bulan ' . bulan($data['bulan']) . ', ' . $data['tahun'])
-                ->setKeyWords('data absen');
+            ->setCreator('IndoExpress')
+            ->setLastModifiedBy('IndoExpress')
+            ->setTitle('Data Absensi')
+            ->setSubject('Absensi')
+            ->setDescription('Absensi' . $data['karyawan']->nama . ' bulan ' . bulan($data['bulan']) . ', ' . $data['tahun'])
+            ->setKeyWords('data absen');
 
         $style_col = [
             'font' => ['bold' => true],
@@ -208,34 +208,34 @@ class Absensi extends CI_Controller
         foreach ($hari as $i => $h) {
             $absen_harian = array_search($h['tgl'], array_column($absen, 'tgl')) !== false ? $absen[array_search($h['tgl'], array_column($absen, 'tgl'))] : '';
 
-            $excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, ($i+1));
-            $excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $h['hari'] . ', ' . $h['tgl']);
-            $excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk', true)['text']);
-            $excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang', true)['text']);
+            $excel->setActiveSheetIndex(0)->setCellValue('A' . $numrow, ($i + 1));
+            $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $h['hari'] . ', ' . $h['tgl']);
+            $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk', true)['text']);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang', true)['text']);
 
             if (check_jam(@$absen_harian['jam_masuk'], 'masuk', true)['status'] == 'telat') {
-                $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_telat);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_telat);
             }
 
             if (check_jam(@$absen_harian['jam_pulang'], 'pulang', true)['status'] == 'lembur') {
-                $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_lembur);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_lembur);
             }
 
             if (is_weekend($h['tgl'])) {
-                $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row_libur);
+                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row_libur);
+                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row_libur);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row_libur);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row_libur);
             } elseif ($absen_harian == '') {
-                $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row_tidak_masuk);
+                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row_tidak_masuk);
+                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row_tidak_masuk);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row_tidak_masuk);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row_tidak_masuk);
             } else {
-                $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
             }
             $numrow++;
         }
@@ -259,7 +259,7 @@ class Absensi extends CI_Controller
         $id_user = @$this->uri->segment(3) ? $this->uri->segment(3) : $this->session->id_user;
         $bulan = @$this->input->get('bulan') ? $this->input->get('bulan') : date('m');
         $tahun = @$this->input->get('tahun') ? $this->input->get('tahun') : date('Y');
-        
+
         $data['karyawan'] = $this->karyawan->find($id_user);
         $data['absen'] = $this->absensi->get_absen($id_user, $bulan, $tahun);
         $data['jam_kerja'] = (array) $this->jam->get_all();

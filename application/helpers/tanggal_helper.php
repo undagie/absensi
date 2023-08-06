@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 function bulan($m = 0)
 {
@@ -43,7 +43,7 @@ function hari($d = 0)
 }
 
 function tgl_hari($tgl)
-{    
+{
     $bulan = bulan(date('m', strtotime($tgl)));
     $hari = hari(date('l', strtotime($tgl)));
     return $hari . ', ' . date('d-', strtotime($tgl)) . $bulan . date('-Y', strtotime($tgl));
@@ -55,7 +55,7 @@ function hari_bulan($bulan, $tahun)
     $jml_hari = cal_days_in_month($kalender, $bulan, $tahun);
     $hari_tgl = [];
 
-    for ($i=1; $i <= $jml_hari; $i++) { 
+    for ($i = 1; $i <= $jml_hari; $i++) {
         $tgl = $i . '-' . $bulan . '-' . $tahun;
         $hari_tgl[] = [
             'hari' => hari(date('l', strtotime($tgl))),

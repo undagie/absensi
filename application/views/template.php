@@ -161,7 +161,7 @@
                         <li class="nav-item <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('absensi/detail_absensi') ?>">
                                 <i class="nc-icon nc-notes"></i>
-                                <p>Presensi-Ku</p>
+                                <p>Detail Presensi</p>
                             </a>
                         </li>
                     <?php endif; ?>

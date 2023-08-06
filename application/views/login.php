@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/vendor/font-awesome/css/font-awesome.min.css') ?>">
 </head>
+
 <body>
     <div class="wraper">
         <div class="container">
@@ -23,7 +25,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <?php if(@$this->session->error): ?>
+                                <?php if (@$this->session->error) : ?>
                                     <div class="alert alert-danger alert-dismissable fade show" role="alert">
                                         <button class="close" aria-dismissable="alert">
                                             <span aria-hidden="true">&times;</span>
@@ -64,4 +66,5 @@
         </div>
     </div>
 </body>
+
 </html>

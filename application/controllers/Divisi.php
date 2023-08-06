@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 class Divisi extends CI_Controller
 {
@@ -22,15 +22,14 @@ class Divisi extends CI_Controller
         $post = $this->input->post();
         $data = [
             'nama_divisi' => $post['nama_divisi'],
-            'gaji_pokok' => $post['gaji_pokok']];
-            $result = $this->divisi->insert_data($data);
+            'gaji_pokok' => $post['gaji_pokok']
+        ];
+        $result = $this->divisi->insert_data($data);
         if ($result) {
             $response = [
                 'status' => 'success',
                 'message' => 'Data divisi telah ditambahkan!'
             ];
-
-        
         } else {
             $response = [
                 'status' => 'error',

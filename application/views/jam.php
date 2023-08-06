@@ -16,9 +16,9 @@
                             <th>Aksi</th>
                         </thead>
                         <tbody>
-                            <?php foreach($jam as $i => $j): ?>
+                            <?php foreach ($jam as $i => $j) : ?>
                                 <tr id="<?= 'jam-' . $j->id_jam ?>">
-                                    <td><?= ($i+1) ?></td>
+                                    <td><?= ($i + 1) ?></td>
                                     <td><?= $j->keterangan ?></td>
                                     <td class="jam-start"><?= $j->start ?></td>
                                     <td class="jam-finish"><?= $j->finish ?></td>
@@ -43,7 +43,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="edit-jam-label">Edit Jam <span id="edit-keterangan"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -67,4 +67,3 @@
         </div>
     </div>
 </div>
-

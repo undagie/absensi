@@ -17,13 +17,13 @@
                             <th>Aksi</th>
                         </thead>
                         <tbody id="tbody-divisi">
-                            <?php foreach($divisi as $i => $d): ?>
+                            <?php foreach ($divisi as $i => $d) : ?>
                                 <tr id="<?= 'divisi-' . $d->id_divisi ?>">
-                                    <td><?= ($i+1) ?></td>
+                                    <td><?= ($i + 1) ?></td>
                                     <td class="nama-divisi"><?= $d->nama_divisi ?></td>
                                     <td class="gaji-pokok"><?= $d->gaji_pokok ?></td>
                                     <td>
-                                        <a href="#" class="btn btn-primary btn-sm btn-edit-divisi" data-toggle="modal" data-target="#modal-edit-divisi" data-divisi="<?= base64_encode(json_encode($d)) ?>"><i class="fa fa-edit"></i> Edit</a> 
+                                        <a href="#" class="btn btn-primary btn-sm btn-edit-divisi" data-toggle="modal" data-target="#modal-edit-divisi" data-divisi="<?= base64_encode(json_encode($d)) ?>"><i class="fa fa-edit"></i> Edit</a>
                                         <a href="<?= base_url('divisi/destroy/' . $d->id_divisi) ?>" class="btn btn-danger btn-sm btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
                                     </td>
                                 </tr>
@@ -43,7 +43,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal-add-divisi-label">Tambah Divisi Karyawan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -72,7 +72,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal-edit-divisi-label">Edit Divisi Karyawan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">

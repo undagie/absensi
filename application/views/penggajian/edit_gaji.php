@@ -40,7 +40,7 @@
                                 <label for="divisi">Divisi : </label>
                                 <select name="divisi" id="divisi" value="<?= $karyawan->divisi ?>" class="form-control">
                                     <option value="" disabled selected>-- Pilih Divisi --</option>
-                                    <?php foreach($divisi as $d): ?>
+                                    <?php foreach ($divisi as $d) : ?>
                                         <option value="<?= $d->id_divisi ?>" <?= ($d->id_divisi == $karyawan->divisi) ? 'selected' : '' ?>><?= $d->nama_divisi ?></option>
                                     <?php endforeach; ?>
                                 </select>

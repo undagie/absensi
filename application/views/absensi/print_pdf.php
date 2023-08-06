@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
 
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
 </head>
+
 <body>
     <div class="row mt-2">
         <div class="mt-2">
@@ -42,17 +44,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach($hari as $i => $h): ?>
-                                    <?php
+                                    <?php foreach ($hari as $i => $h) : ?>
+                                        <?php
                                         $absen_harian = array_search($h['tgl'], array_column($absen, 'tgl')) !== false ? $absen[array_search($h['tgl'], array_column($absen, 'tgl'))] : '';
-                                    ?>
-                                    <tr <?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'class="bg-dark text-white"' : '' ?> <?= ($absen_harian == '') ? 'class="bg-danger text-white"' : '' ?>>
-                                        <td><?= ($i+1) ?></td>
-                                        <td><?= $h['hari'] . ', ' . $h['tgl'] ?></td>
-                                        <td><?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk') ?></td>
-                                        <td><?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang') ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                        ?>
+                                        <tr <?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'class="bg-dark text-white"' : '' ?> <?= ($absen_harian == '') ? 'class="bg-danger text-white"' : '' ?>>
+                                            <td><?= ($i + 1) ?></td>
+                                            <td><?= $h['hari'] . ', ' . $h['tgl'] ?></td>
+                                            <td><?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk') ?></td>
+                                            <td><?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -62,4 +64,5 @@
         </div>
     </div>
 </body>
+
 </html>

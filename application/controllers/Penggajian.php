@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
-class penggajian extends CI_Controller 
+class penggajian extends CI_Controller
 {
     public function __construct()
     {
@@ -51,7 +51,7 @@ class penggajian extends CI_Controller
             ];
             $redirect = 'penggajian/create';
         }
-        
+
         $this->session->set_flashdata('response', $response);
         redirect($redirect);
     }
@@ -91,7 +91,7 @@ class penggajian extends CI_Controller
                 'message' => 'Data penggajian gagal diubah!'
             ];
         }
-        
+
         $this->session->set_flashdata('response', $response);
         redirect('penggajian');
     }
@@ -111,7 +111,7 @@ class penggajian extends CI_Controller
                 'message' => 'Data penggajian gagal dihapus!'
             ];
         }
-        
+
         header('Content-Type: application/json');
         echo $response;
     }

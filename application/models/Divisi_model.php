@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 class Divisi_model extends CI_Model
 {
@@ -23,7 +23,7 @@ class Divisi_model extends CI_Model
             $new_id = $this->db->insert_id();
             $data = $this->find($new_id);
             return $data;
-        } 
+        }
         return $result;
     }
 
@@ -34,7 +34,7 @@ class Divisi_model extends CI_Model
         if ($result) {
             $data = $this->find($id);
             return $data;
-        } 
+        }
         return $result;
     }
 

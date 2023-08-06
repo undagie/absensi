@@ -20,9 +20,9 @@
                             <!-- <th></th> -->
                         </thead>
                         <tbody>
-                            <?php foreach($penggajian as $i => $k): ?>
+                            <?php foreach ($penggajian as $i => $k) : ?>
                                 <tr>
-                                    <td><?= $i+1 ?></td>
+                                    <td><?= $i + 1 ?></td>
                                     <td>
                                         <div class="row">
                                             <div class="col-4 pr-1">

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed!');
 
 class Auth extends CI_Controller
 {
@@ -42,13 +42,13 @@ class Auth extends CI_Controller
     {
         $this->load->model('Absensi_model', 'absensi');
         $this->session->set_userdata([
-           'id_user' => $user_data->id_user,
-           'nama' => $user_data->nama,
-           'foto' => $user_data->foto,
-           'username' => $user_data->username,
-           'divisi' => $user_data->divisi,
-           'level' => $user_data->level,
-           'is_login' => true
+            'id_user' => $user_data->id_user,
+            'nama' => $user_data->nama,
+            'foto' => $user_data->foto,
+            'username' => $user_data->username,
+            'divisi' => $user_data->divisi,
+            'level' => $user_data->level,
+            'is_login' => true
         ]);
 
         if ($user_data->level == 'Karyawan') {
@@ -72,7 +72,7 @@ class Auth extends CI_Controller
         }
 
         $this->session->set_flashdata('response', [
-            'status' => 'success', 
+            'status' => 'success',
             'message' => 'Selamat Datang ' . $user_data->nama
         ]);
     }

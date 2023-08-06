@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed');
+defined('BASEPATH') or die('No direct script access allowed');
 
 class User_Model extends CI_Model
 {
@@ -20,4 +20,3 @@ class User_Model extends CI_Model
         return $result;
     }
 }
-
