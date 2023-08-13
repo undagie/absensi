@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 17 Jul 2023 pada 11.45
--- Versi server: 10.4.18-MariaDB
--- Versi PHP: 7.4.16
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 13, 2023 at 11:13 AM
+-- Server version: 8.0.31
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,59 +21,80 @@ SET time_zone = "+00:00";
 -- Database: `db_absensi`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+DROP PROCEDURE IF EXISTS `InsertAbsensi`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertAbsensi` (IN `tanggal` DATE, IN `idUser` INT)   BEGIN
+  DECLARE dayOfWeek INT;
+  
+  -- Dapatkan hari dalam seminggu (1=Senin, 2=Selasa, ..., 7=Minggu)
+  SET dayOfWeek = DAYOFWEEK(tanggal);
+
+  -- Jangan insert untuk hari Minggu atau tanggal libur
+  IF dayOfWeek <> 7 AND tanggal <> '2023-05-01' THEN 
+    INSERT INTO absensi (tgl, waktu, keterangan, id_user) VALUES
+    (tanggal, ADDTIME('07:00:00', SEC_TO_TIME(ROUND(RAND() * 2700))), 'Masuk', idUser),
+    (tanggal, ADDTIME('16:00:00', SEC_TO_TIME(ROUND(RAND() * 2700))), 'Pulang', idUser);
+  END IF;
+  
+END$$
+
+DROP PROCEDURE IF EXISTS `IsiData`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `IsiData` ()   BEGIN
+  DECLARE i INT DEFAULT 1;
+  WHILE i <= 31 DO
+    CALL InsertAbsensi(DATE('2023-05-' + CAST(i AS CHAR)), 2);
+    CALL InsertAbsensi(DATE('2023-05-' + CAST(i AS CHAR)), 3);
+    SET i = i + 1;
+  END WHILE;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `absensi`
+-- Table structure for table `absensi`
 --
 
-CREATE TABLE `absensi` (
-  `id_absen` int(11) NOT NULL,
+DROP TABLE IF EXISTS `absensi`;
+CREATE TABLE IF NOT EXISTS `absensi` (
+  `id_absen` int NOT NULL AUTO_INCREMENT,
   `tgl` date NOT NULL,
   `waktu` time NOT NULL,
   `keterangan` enum('Masuk','Pulang') NOT NULL,
-  `id_user` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_user` int NOT NULL,
+  PRIMARY KEY (`id_absen`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `absensi`
+-- Dumping data for table `absensi`
 --
 
 INSERT INTO `absensi` (`id_absen`, `tgl`, `waktu`, `keterangan`, `id_user`) VALUES
-(4, '2019-07-25', '07:21:53', 'Masuk', 6),
-(5, '2019-07-26', '09:00:47', 'Masuk', 6),
-(6, '2019-07-26', '16:01:03', 'Pulang', 6),
-(7, '2019-07-25', '17:01:28', 'Pulang', 6),
-(8, '2020-10-23', '22:18:36', 'Masuk', 13),
-(9, '2023-07-13', '20:20:21', 'Masuk', 14),
-(10, '2023-07-13', '20:20:42', 'Pulang', 14),
-(11, '2023-07-13', '20:21:06', 'Masuk', 14),
-(12, '2023-07-13', '20:21:39', 'Pulang', 14),
-(13, '2023-07-13', '20:21:43', 'Masuk', 14),
-(14, '2023-07-13', '20:21:51', 'Masuk', 14),
-(15, '2023-07-13', '23:54:27', 'Pulang', 14),
-(16, '2023-07-14', '19:03:30', 'Masuk', 14),
-(17, '2023-07-14', '19:04:37', 'Pulang', 14),
-(18, '2023-07-17', '06:31:16', 'Masuk', 14),
-(19, '2023-07-17', '15:20:28', 'Pulang', 14),
-(20, '2023-07-17', '15:21:01', 'Pulang', 14),
-(21, '2023-07-17', '15:21:10', 'Masuk', 14),
-(22, '2023-07-17', '16:22:50', 'Pulang', 14);
+(1, '2023-08-01', '07:24:23', 'Masuk', 2),
+(2, '2023-08-01', '16:37:11', 'Pulang', 2),
+(3, '2023-08-02', '07:12:58', 'Masuk', 2),
+(4, '2023-08-02', '17:25:28', 'Pulang', 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `divisi`
+-- Table structure for table `divisi`
 --
 
-CREATE TABLE `divisi` (
-  `id_divisi` smallint(3) NOT NULL,
+DROP TABLE IF EXISTS `divisi`;
+CREATE TABLE IF NOT EXISTS `divisi` (
+  `id_divisi` smallint NOT NULL AUTO_INCREMENT,
   `nama_divisi` varchar(50) NOT NULL,
-  `gaji_pokok` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `gaji_pokok` int NOT NULL,
+  PRIMARY KEY (`id_divisi`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `divisi`
+-- Dumping data for table `divisi`
 --
 
 INSERT INTO `divisi` (`id_divisi`, `nama_divisi`, `gaji_pokok`) VALUES
@@ -88,18 +109,20 @@ INSERT INTO `divisi` (`id_divisi`, `nama_divisi`, `gaji_pokok`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jam`
+-- Table structure for table `jam`
 --
 
-CREATE TABLE `jam` (
-  `id_jam` tinyint(1) NOT NULL,
+DROP TABLE IF EXISTS `jam`;
+CREATE TABLE IF NOT EXISTS `jam` (
+  `id_jam` tinyint(1) NOT NULL AUTO_INCREMENT,
   `start` time NOT NULL,
   `finish` time NOT NULL,
-  `keterangan` enum('Masuk','Pulang') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `keterangan` enum('Masuk','Pulang') NOT NULL,
+  PRIMARY KEY (`id_jam`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `jam`
+-- Dumping data for table `jam`
 --
 
 INSERT INTO `jam` (`id_jam`, `start`, `finish`, `keterangan`) VALUES
@@ -109,96 +132,33 @@ INSERT INTO `jam` (`id_jam`, `start`, `finish`, `keterangan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id_user` smallint(5) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_user` smallint NOT NULL AUTO_INCREMENT,
   `nik` varchar(20) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `alamat` varchar(100) NOT NULL,
   `telp` varchar(15) NOT NULL,
   `email` varchar(50) NOT NULL,
   `foto` varchar(20) DEFAULT 'no-foto.png',
-  `divisi` smallint(5) DEFAULT NULL,
+  `divisi` smallint DEFAULT NULL,
   `username` varchar(25) NOT NULL,
   `password` varchar(60) NOT NULL,
-  `level` enum('Manager','Karyawan') NOT NULL DEFAULT 'Karyawan'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `level` enum('Manager','Karyawan') NOT NULL DEFAULT 'Karyawan',
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `nik`, `nama`, `alamat`, `telp`, `email`, `foto`, `divisi`, `username`, `password`, `level`) VALUES
-(1, '12312312332123', 'Ahmad Fadillah 1', 'Komp Cempaka', '08139212092', 'ahm.fadil@mail.com', '1564316194.png', NULL, 'ahmad', '$2y$10$UwqloCX7PFLM3aQvgQxh6e9UgifqwQOZiF1zdogtLF6iVDR7Yr7IW', 'Manager'),
-(6, '123456789101112', 'Anissa Rahma', 'Jl A Yani', '08151231902', 'anissa.rhm31@mail.com', '1564293217.png', 1, 'anissa', '$2y$10$2kexYaZKVXX/5Liljm2FXO0Zk7BI5LUQgOTz1bRIf211eraxpju2a', 'Karyawan'),
-(7, '1231231231231123', 'Willy', 'Jl Mr Cokro', '081231238', 'willy@mail.com', 'no-foto.png', 2, 'willy', '$2y$10$zGwtkQ8uCLBCmXEbPjJWF.vZkVlf7nmxhbe9iYu08wE8qkJNPdMb.', 'Karyawan'),
-(8, '8931289124891', 'Manager 1', '', '', '', 'no-foto.png', NULL, 'manager_1', '$2y$10$XtMY01KEOd5I065s8Exs0OcQ373RvRNG1JznORr6TmmBNWnZ3vjjK', 'Manager'),
-(9, '1231231238900', 'Manager 2', '', '', '', 'no-foto.png', NULL, 'manager_2', '$2y$10$iJWUOXDznGEmxo.bqnhtmeFL51jN5130LfDlKg8VROfoEmlgC.cFW', 'Manager'),
-(10, '908121310291', 'Manager 3', '', '', '', 'no-foto.png', NULL, 'manager_3', '$2y$10$uGsLvgl.6ji2iZ7tWkNvPelTwZdLQ6QA81Yawa20wsLairCXqV8BO', 'Manager'),
-(11, '123801204012', 'Manager 4', '', '', '', 'no-foto.png', NULL, 'master_4', '$2y$10$Kot81WNqrho4WlcYI13kT.Y5V2sMg1ZSAXcITrp8cj3dqHpbl4vrS', 'Manager'),
-(13, '202010765341', 'RAJA PUTRA MEDIA', 'Komp Batuah', '082137801536', 'rajaputramedia@gmail.com', '1603466299.png', 2, 'raja', '$2y$10$TUMbb787RN.ML.Z65ZFuDuaGRqi..c.5YdJp/AseHzmvf9NFd6nMG', 'Karyawan'),
-(14, '1', 'Mila Siti Salamah', 'Jl Bauntung', '0000000000', 'milasitisalamah22@gmail.com', 'no-foto.png', 1, 'mila', '$2y$10$2e85lCgch7alZjfJT1bWbuqKaznzkGN/eQbS3yG.I.Rl8lvxgr4bW', 'Karyawan'),
-(15, '2', 'Salamah', '', '1111111111111', 'milasiti@gmail.com', 'no-foto.png', 3, 'mil', '$2y$10$o1ZPByoMPasfql0Nn7H4Quqp3PFM6qBdBkD65fK3A71HG3Sjwu/Ui', 'Manager'),
-(16, '1', 'Siti ', 'Komplek Kelapa Gading Permai', '22', 'milisitisalamah22@gmail.com', 'no-foto.png', 13, 'siti', '$2y$10$REEpT3BWC/8BTJCeevuXZ.LyzEMxJhb6i6pDuIL79jogjCnxGiwMa', 'Karyawan'),
-(17, '33333', 'Salamah', 'Jl Panglima Batur', '33333', 'salamah@gmail.com', 'no-foto.png', 6, 'salamah', '$2y$10$OXhhFr/dLxw04yhb/emBA.ydQUVFHeQcn9lRUdFc6lTdlZzujkGKm', 'Karyawan');
-
---
--- Indexes for dumped tables
---
-
---
--- Indeks untuk tabel `absensi`
---
-ALTER TABLE `absensi`
-  ADD PRIMARY KEY (`id_absen`);
-
---
--- Indeks untuk tabel `divisi`
---
-ALTER TABLE `divisi`
-  ADD PRIMARY KEY (`id_divisi`);
-
---
--- Indeks untuk tabel `jam`
---
-ALTER TABLE `jam`
-  ADD PRIMARY KEY (`id_jam`);
-
---
--- Indeks untuk tabel `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`);
-
---
--- AUTO_INCREMENT untuk tabel yang dibuang
---
-
---
--- AUTO_INCREMENT untuk tabel `absensi`
---
-ALTER TABLE `absensi`
-  MODIFY `id_absen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT untuk tabel `divisi`
---
-ALTER TABLE `divisi`
-  MODIFY `id_divisi` smallint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT untuk tabel `jam`
---
-ALTER TABLE `jam`
-  MODIFY `id_jam` tinyint(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT untuk tabel `users`
---
-ALTER TABLE `users`
-  MODIFY `id_user` smallint(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+(1, '1001001', 'Junaidi', 'Jalan Adhyaksa', '08971137712', 'junaidi@gmail.com', '1691317781.png', NULL, 'junaidi', '$2y$10$24GkCeAu7hA.07/BrfF0yuEqrIavNC8BXVKBOlsASOi6m96q4OV32', 'Manager'),
+(2, '1001002', 'Mila Siti Salamah', 'Jalan Ratu Intan', '08115016727', 'milasitisalamah22@gmail.com', '1691317710.png', 2, 'mila', '$2y$10$mityfmTuTwXx59d784Lyh.2CBl29f1IacWTGL991Amtcy5d4Q7.yy', 'Karyawan'),
+(3, '1001002', 'Purnomo', 'Jalan Salak', '081313131313', 'purnomo@gmail.com', '1691317865.png', 1, 'purnomo', '$2y$10$y/a1LlW17RrEL4nVa1ptSes5Mz2J6i1rcDgu.WPXQraRvyFvcB5mK', 'Karyawan');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

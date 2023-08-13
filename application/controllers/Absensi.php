@@ -7,7 +7,7 @@ class Absensi extends CI_Controller
     {
         parent::__construct();
         is_login();
-        date_default_timezone_set('Asia/Jakarta');
+        date_default_timezone_set('Asia/Singapore');
         $this->load->model('Absensi_model', 'absensi');
         $this->load->model('Karyawan_model', 'karyawan');
         $this->load->model('Jam_model', 'jam');
