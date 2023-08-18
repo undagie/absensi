@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or die('No direct script access allowed!');
 
-class penggajian extends CI_Controller
+class Penggajian extends CI_Controller
 {
     public function __construct()
     {
@@ -9,32 +9,44 @@ class penggajian extends CI_Controller
         is_login();
         redirect_if_level_not('Manager');
         $this->load->model('penggajian_model', 'penggajian');
+        $this->load->model('User_model', 'user');
     }
 
     public function index()
     {
-        $data['penggajian'] = $this->penggajian->get_all();
+        $bulan = $this->input->get('bulan');
+        $tahun = $this->input->get('tahun');
+
+        if ($bulan && $tahun) {
+            $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
+        } else {
+            $data['penggajian'] = $this->penggajian->get_all();
+        }
         return $this->template->load('template', 'penggajian/index', $data);
     }
 
     public function create()
     {
-        $this->load->model('Divisi_model', 'divisi');
-        $data['divisi'] = $this->divisi->get_all();
-        return $this->template->load('template', 'penggajian/create', $data);
+        $this->load->model('User_model');
+
+        $data['users'] = $this->User_model->get_all_users();
+
+        $this->template->load('template', 'penggajian/create', $data);
     }
+
 
     public function store()
     {
         $post = $this->input->post();
+        $total_gaji = $post['gaji_pokok'] + $post['bonus'] - $post['potongan'];
+
         $data = [
-            'nik' => $post['nik'],
-            'nama' => $post['nama'],
-            'telp' => $post['telp'],
-            'divisi' => $post['divisi'],
-            'email' => $post['email'],
-            'username' => $post['username'],
-            'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+            'id_user' => $post['id_user'],
+            'bulan' => $post['bulan'],
+            'tahun' => $post['tahun'],
+            'gaji_pokok' => $post['gaji_pokok'],
+            'bonus' => $post['bonus'],
+            'potongan' => $post['potongan'],
         ];
 
         $result = $this->penggajian->insert_data($data);
@@ -56,30 +68,27 @@ class penggajian extends CI_Controller
         redirect($redirect);
     }
 
-    public function edit()
+    public function edit($id_penggajian)
     {
-        $id_user = $this->uri->segment(3);
-        $data['penggajian'] = $this->penggajian->find($id_user);
+        $data['users'] = $this->user->get_all_users();
+        $data['penggajian'] = $this->penggajian->find($id_penggajian);
         return $this->template->load('template', 'penggajian/edit', $data);
     }
 
     public function update()
     {
         $post = $this->input->post();
+
         $data = [
-            'nik' => $post['nik'],
-            'nama' => $post['nama'],
-            'telp' => $post['telp'],
-            'divisi' => $post['divisi'],
-            'email' => $post['email'],
-            'username' => $post['username'],
+            'id_user' => $post['id_user'],
+            'bulan' => $post['bulan'],
+            'tahun' => $post['tahun'],
+            'gaji_pokok' => $post['gaji_pokok'],
+            'bonus' => $post['bonus'],
+            'potongan' => $post['potongan'],
         ];
 
-        if ($post['password'] !== '') {
-            $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
-
-        $result = $this->penggajian->update_data($post['id_user'], $data);
+        $result = $this->penggajian->update_data($post['id_penggajian'], $data);
         if ($result) {
             $response = [
                 'status' => 'success',
@@ -96,10 +105,9 @@ class penggajian extends CI_Controller
         redirect('penggajian');
     }
 
-    public function destroy()
+    public function destroy($id_penggajian)
     {
-        $id_user = $this->uri->segment(3);
-        $result = $this->penggajian->delete_data($id_user);
+        $result = $this->penggajian->delete_data($id_penggajian);
         if ($result) {
             $response = [
                 'status' => 'success',
@@ -113,10 +121,24 @@ class penggajian extends CI_Controller
         }
 
         header('Content-Type: application/json');
-        echo $response;
+        echo json_encode($response);
+    }
+
+    public function get_gaji_pokok_by_user($id_user)
+    {
+        $this->load->model('User_Model');
+        $user = $this->User_Model->find_by('id_user', $id_user, TRUE);
+
+        $this->load->model('Divisi_Model');
+        $divisi = $this->Divisi_Model->find($user->divisi);
+
+        $response = [
+            'success' => true,
+            'gaji_pokok' => $divisi->gaji_pokok
+        ];
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
     }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\penggajian.php */

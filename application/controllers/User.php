@@ -89,8 +89,11 @@ class User extends CI_Controller
         $this->session->set_flashdata('response', $response);
         redirect('user');
     }
+
+    public function get_salary_by_division($division)
+    {
+        $this->db->where('division', $division);
+        $query = $this->db->get('salaries_table'); // gantilah dengan nama tabel yang sesuai
+        return $query->row();
+    }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\User.php */

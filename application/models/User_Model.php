@@ -19,4 +19,9 @@ class User_Model extends CI_Model
         $result = $this->db->update('users', $data);
         return $result;
     }
+
+    public function get_all_users()
+    {
+        return $this->db->get('users')->result();
+    }
 }

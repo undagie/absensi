@@ -260,4 +260,39 @@
     <?php endif; ?>
 </script>
 
+<script>
+    $(document).ready(function() {
+        function calculateTotal() {
+            const gajiPokok = parseFloat($('#gaji_pokok').val()) || 0;
+            const bonus = parseFloat($('#bonus').val()) || 0;
+            const potongan = parseFloat($('#potongan').val()) || 0;
+            $('#total_gaji').val(gajiPokok + bonus - potongan);
+        }
+
+        $('#bonus, #potongan').on('input', calculateTotal);
+
+        $('#id_user').on('change', function() {
+            const userId = $(this).val();
+            $.ajax({
+                url: "<?= base_url('penggajian/get_gaji_pokok_by_user/') ?>" + userId,
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (data.success) {
+                        $('#gaji_pokok').val(data.gaji_pokok);
+                        // Panggil fungsi calculateTotal untuk meng-update total gaji
+                        calculateTotal();
+                    } else {
+                        console.error("Terjadi kesalahan saat mengambil gaji pokok.");
+                    }
+                },
+                error: function(err) {
+                    console.error("Terjadi kesalahan saat mengambil gaji pokok: ", err);
+                }
+            });
+        });
+
+    });
+</script>
+
 </html>
