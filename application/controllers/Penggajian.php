@@ -10,6 +10,7 @@ class Penggajian extends CI_Controller
         redirect_if_level_not('Manager');
         $this->load->model('penggajian_model', 'penggajian');
         $this->load->model('User_model', 'user');
+        $this->load->helper('Tanggal');
     }
 
     public function index()
@@ -140,5 +141,44 @@ class Penggajian extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function cetakpenggajian()
+    {
+        $bulan = $this->input->get('bulan');
+        $tahun = $this->input->get('tahun');
+
+        if ($bulan && $tahun) {
+            $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
+        } else {
+            $data['penggajian'] = $this->penggajian->get_all();
+        }
+        return $this->template->load('template', 'penggajian/cetakpenggajian', $data);
+    }
+
+    public function print_report()
+    {
+        $bulan = $this->input->get('bulan');
+        $tahun = $this->input->get('tahun');
+
+        if ($bulan && $tahun) {
+            $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
+        } else {
+            $data['penggajian'] = $this->penggajian->get_all();
+        }
+
+        $this->load->view('penggajian/report', $data);
+    }
+
+    public function cetak_slip_gaji($id_penggajian)
+    {
+        $data['penggajian'] = $this->penggajian->getDetailPenggajian($id_penggajian); // Ambil detail penggajian berdasarkan ID
+
+        if ($data['penggajian']) {
+            $this->load->view('penggajian/slipgaji', $data); // Load view report slip gaji dengan data penggajian yang bersangkutan
+        } else {
+            // Tampilkan pesan error jika data tidak ditemukan
+            show_error('Data penggajian tidak ditemukan.');
+        }
     }
 }

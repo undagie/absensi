@@ -35,6 +35,23 @@ class Absensi extends CI_Controller
         return $this->template->load('template', 'absensi/detail', $data);
     }
 
+    private function detail_data_absen()
+    {
+        $id_user = @$this->uri->segment(3) ? $this->uri->segment(3) : $this->session->id_user;
+        $bulan = @$this->input->get('bulan') ? $this->input->get('bulan') : date('m');
+        $tahun = @$this->input->get('tahun') ? $this->input->get('tahun') : date('Y');
+
+        $data['karyawan'] = $this->karyawan->find($id_user);
+        $data['absen'] = $this->absensi->get_absen($id_user, $bulan, $tahun);
+        $data['jam_kerja'] = (array) $this->jam->get_all();
+        $data['all_bulan'] = bulan();
+        $data['bulan'] = $bulan;
+        $data['tahun'] = $tahun;
+        $data['hari'] = hari_bulan($bulan, $tahun);
+
+        return $data;
+    }
+
     public function check_absen()
     {
         $now = date('H:i:s');
@@ -90,14 +107,19 @@ class Absensi extends CI_Controller
 
     public function export_pdf()
     {
-        $this->load->library('pdf');
         $data = $this->detail_data_absen();
         $html_content = $this->load->view('absensi/print_pdf', $data, true);
-        $filename = 'Absensi ' . $data['karyawan']->nama . ' - ' . bulan($data['bulan']) . ' ' . $data['tahun'] . '.pdf';
 
+        $this->load->library('pdf');
+        $pdf = new Dompdf\Dompdf();
         $this->pdf->loadHtml($html_content);
+
+        $pdf->setPaper('A4', 'portrait');
         $this->pdf->render();
-        $this->pdf->stream($filename, ['Attachment' => 1]);
+        //$output = $pdf->output();
+
+        $filename = 'Absensi ' . $data['karyawan']->nama . ' - ' . bulan($data['bulan']) . ' ' . $data['tahun'] . '.pdf';
+        $this->pdf->stream($filename, array("Attachment" => false));
     }
 
     public function export_excel()
@@ -268,22 +290,5 @@ class Absensi extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
-    }
-
-    private function detail_data_absen()
-    {
-        $id_user = @$this->uri->segment(3) ? $this->uri->segment(3) : $this->session->id_user;
-        $bulan = @$this->input->get('bulan') ? $this->input->get('bulan') : date('m');
-        $tahun = @$this->input->get('tahun') ? $this->input->get('tahun') : date('Y');
-
-        $data['karyawan'] = $this->karyawan->find($id_user);
-        $data['absen'] = $this->absensi->get_absen($id_user, $bulan, $tahun);
-        $data['jam_kerja'] = (array) $this->jam->get_all();
-        $data['all_bulan'] = bulan();
-        $data['bulan'] = $bulan;
-        $data['tahun'] = $tahun;
-        $data['hari'] = hari_bulan($bulan, $tahun);
-
-        return $data;
     }
 }

@@ -1,5 +1,7 @@
 Saya akan memberikan kode program, tugas anda adalah memahaminya. Tidak perlu berkomentar, cukup balas OKE setelah anda memahaminya.
 
+Ini adalah ..., tidak perlu dijelaskan,  katakan OKE jika anda sudah memahaminya
+
 CREATE TABLE IF NOT EXISTS `absensi` (
   `id_absen` int NOT NULL AUTO_INCREMENT,
   `tgl` date NOT NULL,

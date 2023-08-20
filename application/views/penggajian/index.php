@@ -4,7 +4,7 @@
             <div class="card-header d-block">
                 <h4 class="card-title float-left">Daftar Penggajian</h4>
                 <div class="d-inline ml-auto float-right">
-                    <a href="<?= base_url('penggajian/create') ?>" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Tambah Penggajian</a>
+                    <a href="<?= base_url('penggajian/create') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Penggajian</a>
                 </div>
             </div>
             <div class="card-body">

@@ -95,18 +95,12 @@
                             </a>
                         </li>
                         <li class="nav-item <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('daftarabsensi') ?>">
-                                <i class="nc-icon nc-notes"></i>
-                                <p>Daftar Presensi</p>
-                            </a>
-                        </li>
-                        <li class="nav-tabs <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('daftargaji') ?>">
+                            <a class="nav-link" href="<?= base_url('penggajian/cetakpenggajian') ?>">
                                 <i class="nc-icon nc-notes"></i>
                                 <p>Daftar Gaji</p>
                             </a>
                         </li>
-                        <li class="nav-item <?= @$_active ?>">
+                        <li class="nav-tabs <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('daftarlembur') ?>">
                                 <i class="nc-icon nc-notes"></i>
                                 <p>Daftar Lembur</p>
@@ -122,18 +116,6 @@
                             <a class="nav-link" href="<?= base_url('rekapjamkerja') ?>">
                                 <i class="nc-icon nc-notes"></i>
                                 <p>Rekap Jam Kerja</p>
-                            </a>
-                        </li>
-                        <li class="nav-tabs <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('slipgaji') ?>">
-                                <i class="nc-icon nc-notes"></i>
-                                <p>Slip Gaji</p>
-                            </a>
-                        </li>
-                        <li class="nav-item <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('kartukaryawan') ?>">
-                                <i class="nc-icon nc-notes"></i>
-                                <p>Kartu Karyawan</p>
                             </a>
                         </li>
                     <?php else : ?>

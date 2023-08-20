@@ -56,4 +56,17 @@ class Penggajian_model extends CI_Model
 
         return $this->db->get($this->table)->result();
     }
+
+    public function getDetailPenggajian($id_penggajian)
+    {
+        $this->db->select('penggajian.*, users.*, divisi.*');
+        $this->db->from('penggajian');
+        $this->db->join('users', 'penggajian.id_user = users.id_user');
+        $this->db->join('divisi', 'users.divisi = divisi.id_divisi');
+        $this->db->where('id_penggajian', $id_penggajian);
+        return $this->db->get()->row();
+
+        //echo $this->db->last_query();
+        //exit;
+    }
 }

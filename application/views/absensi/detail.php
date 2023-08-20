@@ -48,14 +48,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 ml-auto text-right mb-2">
                         <div class="dropdown d-inline">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="droprop-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-print"></i>
-                                Export Laporan
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="droprop-action">
-                                <a href="<?= base_url('absensi/export_pdf/' . $this->uri->segment(3) . "?bulan=$bulan&tahun=$tahun") ?>" class="dropdown-item" target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a>
-                                <a href="<?= base_url('absensi/export_excel/' . $this->uri->segment(3) . "?bulan=$bulan&tahun=$tahun") ?>" class="dropdown-item" target="_blank"><i class="fa fa-file-excel-o"></i> Excel</a>
-                            </div>
+                            <a href="<?= base_url('absensi/export_pdf/' . $this->uri->segment(3) . "?bulan=$bulan&tahun=$tahun") ?>" class="btn btn-primary" target="_blank"><i class="fa fa-file-pdf-o"></i> Cetak Laporan</a>
                         </div>
                     </div>
                 </div>

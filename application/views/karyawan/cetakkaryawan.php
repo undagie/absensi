@@ -9,7 +9,7 @@
                 <!-- Form Filter -->
                 <form method="get" action="<?= base_url('user/cetakkaryawan') ?>" id="filterForm">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label for="divisi">Filter Divisi:</label>
                                 <select class="form-control" name="divisi" id="divisi">
@@ -20,13 +20,13 @@
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-
                             </div>
                         </div>
-                        <div class="col-md-8 mt-4">
-                            <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter</button>
-                            <a href="<?= base_url('user/print_report') ?>" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Cetak</a>
-
+                        <div class="col-md-4 mt-4">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter</button>
+                                <a href="<?= base_url('user/print_report') ?>" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Cetak</a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -40,6 +40,7 @@
                             <th width="30%">Karyawan</th>
                             <th>Alamat</th>
                             <th>Kontak</th>
+                            <th>Aksi</th> <!-- Kolom baru untuk tombol cetak kartu karyawan -->
                         </thead>
                         <tbody>
                             <?php foreach ($users as $i => $k) : ?>
@@ -62,6 +63,10 @@
                                             Email: <?= $k->email ?><br>
                                             Telp: <?= $k->telp ?>
                                         </address>
+                                    </td>
+                                    <!-- Tombol Aksi untuk cetak kartu karyawan -->
+                                    <td>
+                                        <a href="<?= base_url('user/cetak_kartu_karyawan/' . $k->id_user) ?>" class="btn btn-secondary"><i class="fa fa-id-card"></i> Cetak Kartu Karyawan</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -46,4 +46,14 @@ class User_model extends CI_Model
         }
         return $this->db->get('users')->result();
     }
+
+    public function getUserWithDivisiById($id)
+    {
+        $this->db->select('users.*, divisi.nama_divisi');
+        $this->db->from('users');
+        $this->db->join('divisi', 'users.divisi = divisi.id_divisi');
+        $this->db->where('users.id_user', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
 }

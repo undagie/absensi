@@ -130,4 +130,10 @@ class User extends CI_Controller
         $data['divisi_filter'] = $divisi_filter;
         $this->load->view('karyawan/report', $data);
     }
+
+    public function cetak_kartu_karyawan($id)
+    {
+        $data['user'] = $this->user->getUserWithDivisiById($id);
+        $this->load->view('karyawan/kartukaryawan', $data);
+    }
 }
