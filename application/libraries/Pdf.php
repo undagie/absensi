@@ -1,16 +1,14 @@
-<?php 
-if (!defined('BASEPATH')) exit('No direct script access allowed');  
- 
-require_once 'dompdf/autoload.inc.php';
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+require_once APPPATH . 'libraries/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
 
-class Pdf extends Dompdf
+class Pdf
 {
-	public function __construct()
+	public function create()
 	{
-		 parent::__construct();
-	} 
+		return new Dompdf();
+	}
 }
-
-?>

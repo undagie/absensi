@@ -68,5 +68,3 @@ function is_weekend($tgl = false)
     $tgl = @$tgl ? $tgl : date('d-m-Y');
     return in_array(date('l', strtotime($tgl)), ['Saturday', 'Sunday']);
 }
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\helpers\check_absen_helper.php */

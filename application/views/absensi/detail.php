@@ -78,8 +78,15 @@
                                 <tr <?= (in_array($h['hari'], ['Sabtu', 'Minggu'])) ? 'class="bg-dark text-white"' : '' ?> <?= ($absen_harian == '') ? 'class="bg-danger text-white"' : '' ?>>
                                     <td><?= ($i + 1) ?></td>
                                     <td><?= $h['hari'] . ', ' . $h['tgl'] ?></td>
-                                    <td><?= is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk') ?></td>
-                                    <td><?= is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang') ?></td>
+                                    <?php $tanggal_sekarang = date("Y-m-d");
+                                    $tanggal_presensi = date("Y-m-d", strtotime($h['tgl']));
+                                    if ($tanggal_presensi > $tanggal_sekarang) {
+                                        echo '<td colspan="2">Presensi belum dibuka</td>';
+                                    } else {
+                                    ?>
+                                        <td><?= is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk') ?></td>
+                                        <td><?= is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang') ?></td>
+                                    <?php } ?>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else : ?>

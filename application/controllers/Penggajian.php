@@ -126,8 +126,8 @@ class Penggajian extends CI_Controller
 
     public function get_gaji_pokok_by_user($id_user)
     {
-        $this->load->model('User_Model');
-        $user = $this->User_Model->find_by('id_user', $id_user, TRUE);
+        $this->load->model('User_model');
+        $user = $this->User_model->find_by('id_user', $id_user, TRUE);
 
         $this->load->model('Divisi_Model');
         $divisi = $this->Divisi_Model->find($user->divisi);

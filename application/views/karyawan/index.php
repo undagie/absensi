@@ -5,6 +5,8 @@
                 <h4 class="card-title float-left">Data Karyawan</h4>
                 <div class="d-inline ml-auto float-right">
                     <a href="<?= base_url('karyawan/create') ?>" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Tambah</a>
+                    <a href="<?= base_url('karyawan/print_report') ?>" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Cetak</a>
+
                 </div>
             </div>
             <div class="card-body">

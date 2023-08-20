@@ -38,7 +38,12 @@ class Karyawan_model extends CI_Model
         $result = $this->db->delete('users');
         return $result;
     }
+
+    public function get_by_divisi($divisi)
+    {
+        if ($divisi != 'all') {
+            $this->db->where('divisi', $divisi);
+        }
+        return $this->db->get('karyawan')->result();
+    }
 }
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\models\Karyawan_model.php */

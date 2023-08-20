@@ -96,4 +96,38 @@ class User extends CI_Controller
         $query = $this->db->get('salaries_table'); // gantilah dengan nama tabel yang sesuai
         return $query->row();
     }
+
+    public function cetakkaryawan()
+    {
+        // Mengambil daftar divisi dari database
+        $data['divisions'] = $this->User_model->get_all_divisi();
+
+        // Mengambil filter divisi dari input GET (jika ada)
+        $divisi_filter = $this->input->get('divisi', TRUE);
+        if (!$divisi_filter) {
+            $divisi_filter = 'all';  // default filter
+        }
+
+        // Mengambil data karyawan berdasarkan filter divisi
+        $data['users'] = $this->User_model->get_all_users_by_divisi($divisi_filter);
+        $data['divisi_filter'] = $divisi_filter;
+
+        // Memuat view cetakkaryawan dengan data yang diperlukan
+        $this->template->load('template', 'karyawan/cetakkaryawan', $data);
+    }
+
+
+    public function print_report()
+    {
+        $data['divisions'] = $this->User_model->get_all_divisi();
+
+        $divisi_filter = $this->input->get('divisi', TRUE);
+        if (!$divisi_filter) {
+            $divisi_filter = 'all';
+        }
+
+        $data['users'] = $this->User_model->get_all_users_by_divisi($divisi_filter);
+        $data['divisi_filter'] = $divisi_filter;
+        $this->load->view('karyawan/report', $data);
+    }
 }

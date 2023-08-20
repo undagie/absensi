@@ -39,6 +39,22 @@ class Absensi extends CI_Controller
     {
         $now = date('H:i:s');
         $data['absen'] = $this->absensi->absen_harian_user($this->session->id_user)->num_rows();
+
+        $absen_harian = $this->absensi->absen_harian_user($this->session->id_user)->result();
+        $sudah_absen_masuk = false;
+        $sudah_absen_pulang = false;
+
+        foreach ($absen_harian as $absen) {
+            if ($absen->keterangan == 'Masuk') {
+                $sudah_absen_masuk = true;
+            } elseif ($absen->keterangan == 'Pulang') {
+                $sudah_absen_pulang = true;
+            }
+        }
+
+        $data['sudah_absen_masuk'] = $sudah_absen_masuk;
+        $data['sudah_absen_pulang'] = $sudah_absen_pulang;
+
         return $this->template->load('template', 'absensi/absen', $data);
     }
 
@@ -271,6 +287,3 @@ class Absensi extends CI_Controller
         return $data;
     }
 }
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\Absensi.php */

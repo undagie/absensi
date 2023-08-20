@@ -9,6 +9,7 @@ class Karyawan extends CI_Controller
         is_login();
         redirect_if_level_not('Manager');
         $this->load->model('Karyawan_model', 'karyawan');
+        $this->load->model('User_model', 'user');
     }
 
     public function index()
@@ -118,7 +119,3 @@ class Karyawan extends CI_Controller
         echo $response;
     }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\Karyawan.php */

@@ -64,6 +64,3 @@ function hari_bulan($bulan, $tahun)
     }
     return $hari_tgl;
 }
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\helpers\Tanggal.php */

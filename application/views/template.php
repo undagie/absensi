@@ -88,63 +88,53 @@
                                 <p>Penggajian</p>
                             </a>
                         </li>
-                        <li class="nav-tabs <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('absensi') ?>">
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('user/cetakkaryawan') ?>">
                                 <i class="nc-icon nc-notes"></i>
-                                <p>Laporan Presensi</p>
+                                <p>Daftar Karyawan</p>
                             </a>
-                            <ul class="nav tree-view">
-                                <li class="nav-item">
-                                    <a href="daftar_presensi.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daftar Presensi</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="rekapitulasi_presensi.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Rekapitulasi</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="daftar_cuti.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daftar Cuti</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="daftar_lembur.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daftar Lembur</p>
-                                    </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('daftarabsensi') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Daftar Presensi</p>
+                            </a>
                         </li>
                         <li class="nav-tabs <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('absensi') ?>">
+                            <a class="nav-link" href="<?= base_url('daftargaji') ?>">
                                 <i class="nc-icon nc-notes"></i>
-                                <p>Laporan Gaji</p>
+                                <p>Daftar Gaji</p>
                             </a>
-                            <ul class="nav tree-view">
-                                <li class="nav-item">
-                                    <a href="daftar_gaji.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daftar Gaji</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="rekapitulasi_gaji.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Rekapitulasi</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="slip_gaji.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Slip Gaji</p>
-                                    </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('daftarlembur') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Daftar Lembur</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('rekapabsensi') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Rekap Presensi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('rekapjamkerja') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Rekap Jam Kerja</p>
+                            </a>
+                        </li>
+                        <li class="nav-tabs <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('slipgaji') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Slip Gaji</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= @$_active ?>">
+                            <a class="nav-link" href="<?= base_url('kartukaryawan') ?>">
+                                <i class="nc-icon nc-notes"></i>
+                                <p>Kartu Karyawan</p>
+                            </a>
                         </li>
                     <?php else : ?>
                         <li class="nav-item <?= @$_active ?>">
