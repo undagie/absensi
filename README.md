@@ -19,7 +19,7 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 ## Cara Instalasi
 
 1. Klon repositori ini:
-   git clone https://github.com/undagie/absensi.git)https://github.com/undagie/absensi.git
+   git clone https://github.com/undagie/absensi.git
 2. Masuk ke direktori aplikasi:
    cd nama-direktori
 3. Install dependensi:
