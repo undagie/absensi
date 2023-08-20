@@ -7,9 +7,7 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 1. **Pendaftaran Pengguna**: Mudah mendaftarkan siswa atau karyawan baru.
 2. **Pencatatan Kehadiran**: Cukup dengan satu klik, kehadiran dapat dicatat.
 3. **Laporan Kehadiran**: Tampilkan ringkasan dan detail kehadiran dalam bentuk grafis dan tabel.
-4. **Notifikasi**: Kirim notifikasi otomatis ke pengguna yang belum melakukan presensi.
-5. **Integrasi dengan Kalender**: Tandai tanggal penting dan hari libur.
-... [tambahkan fitur lain sesuai kebutuhan]
+4. **Integrasi dengan Kalender**: Tandai tanggal penting dan hari libur.
 
 ## Teknologi yang Digunakan
 
@@ -20,8 +18,7 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 
 1. Klon repositori ini:
    git clone https://github.com/undagie/absensi.git
-2. Masuk ke direktori aplikasi:
-   cd nama-direktori
+2. Masuk ke direktori aplikasi
 3. Install dependensi:
    composer install
 4. Ekspor basis data
@@ -33,6 +30,7 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 Manajer:
 - Username: junaidi
 - Password: junaidi
+
 Karyawan:
 - Username: mila
 - Password: mila
