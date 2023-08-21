@@ -4,7 +4,7 @@
             <div class="card-header">
                 <h4 class="card-title float-left">Divisi Karyawan</h4>
                 <div class="d-inline ml-auto float-right">
-                    <a href="#" class="btn btn-success btn-sm btn-add-divisi" data-toggle="modal" data-target="#modal-add-divisi"><i class="fa fa-plus"></i> Tambah Divisi</a>
+                    <a href="#" class="btn btn-success btn-add-divisi" data-toggle="modal" data-target="#modal-add-divisi"><i class="fa fa-plus"></i> Tambah Divisi</a>
                 </div>
             </div>
             <div class="card-body">
@@ -21,10 +21,10 @@
                                 <tr id="<?= 'divisi-' . $d->id_divisi ?>">
                                     <td><?= ($i + 1) ?></td>
                                     <td class="nama-divisi"><?= $d->nama_divisi ?></td>
-                                    <td class="gaji-pokok"><?= $d->gaji_pokok ?></td>
-                                    <td>
-                                        <a href="#" class="btn btn-primary btn-sm btn-edit-divisi" data-toggle="modal" data-target="#modal-edit-divisi" data-divisi="<?= base64_encode(json_encode($d)) ?>"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="<?= base_url('divisi/destroy/' . $d->id_divisi) ?>" class="btn btn-danger btn-sm btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
+                                    <td class="gaji-pokok">Rp <?= number_format($d->gaji_pokok, 0, ',', '.') ?></td>
+                                    <td style="width: 20%;">
+                                        <a href="#" class="btn btn-primary btn-edit-divisi" data-toggle="modal" data-target="#modal-edit-divisi" data-divisi="<?= base64_encode(json_encode($d)) ?>"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?= base_url('divisi/destroy/' . $d->id_divisi) ?>" class="btn btn-danger btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

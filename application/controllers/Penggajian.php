@@ -10,6 +10,7 @@ class Penggajian extends CI_Controller
         redirect_if_level_not('Manager');
         $this->load->model('penggajian_model', 'penggajian');
         $this->load->model('User_model', 'user');
+        $this->load->model('Divisi_Model');
         $this->load->helper('Tanggal');
     }
 
@@ -23,23 +24,19 @@ class Penggajian extends CI_Controller
         } else {
             $data['penggajian'] = $this->penggajian->get_all();
         }
+
         return $this->template->load('template', 'penggajian/index', $data);
     }
 
     public function create()
     {
-        $this->load->model('User_model');
-
-        $data['users'] = $this->User_model->get_all_users();
-
+        $data['users'] = $this->user->get_all_users();
         $this->template->load('template', 'penggajian/create', $data);
     }
-
 
     public function store()
     {
         $post = $this->input->post();
-        $total_gaji = $post['gaji_pokok'] + $post['bonus'] - $post['potongan'];
 
         $data = [
             'id_user' => $post['id_user'],
@@ -48,25 +45,17 @@ class Penggajian extends CI_Controller
             'gaji_pokok' => $post['gaji_pokok'],
             'bonus' => $post['bonus'],
             'potongan' => $post['potongan'],
+            'lembur' => $this->get_lembur($post['id_user'], $post['bulan'], $post['tahun']) // Mengambil honor lembur dari fungsi get_lembur
         ];
 
         $result = $this->penggajian->insert_data($data);
-        if ($result) {
-            $response = [
-                'status' => 'success',
-                'message' => 'Data penggajian telah ditambahkan!'
-            ];
-            $redirect = 'penggajian/';
-        } else {
-            $response = [
-                'status' => 'error',
-                'message' => 'Data penggajian gagal ditambahkan'
-            ];
-            $redirect = 'penggajian/create';
-        }
+
+        $response = $result
+            ? ['status' => 'success', 'message' => 'Data penggajian telah ditambahkan!']
+            : ['status' => 'error', 'message' => 'Data penggajian gagal ditambahkan'];
 
         $this->session->set_flashdata('response', $response);
-        redirect($redirect);
+        redirect($result ? 'penggajian/' : 'penggajian/create');
     }
 
     public function edit($id_penggajian)
@@ -87,20 +76,14 @@ class Penggajian extends CI_Controller
             'gaji_pokok' => $post['gaji_pokok'],
             'bonus' => $post['bonus'],
             'potongan' => $post['potongan'],
+            'lembur' => $this->get_lembur($post['id_user'], $post['bulan'], $post['tahun'])
         ];
 
         $result = $this->penggajian->update_data($post['id_penggajian'], $data);
-        if ($result) {
-            $response = [
-                'status' => 'success',
-                'message' => 'Data penggajian berhasil diubah!'
-            ];
-        } else {
-            $response = [
-                'status' => 'error',
-                'message' => 'Data penggajian gagal diubah!'
-            ];
-        }
+
+        $response = $result
+            ? ['status' => 'success', 'message' => 'Data penggajian berhasil diubah!']
+            : ['status' => 'error', 'message' => 'Data penggajian gagal diubah!'];
 
         $this->session->set_flashdata('response', $response);
         redirect('penggajian');
@@ -180,5 +163,72 @@ class Penggajian extends CI_Controller
             // Tampilkan pesan error jika data tidak ditemukan
             show_error('Data penggajian tidak ditemukan.');
         }
+    }
+
+    public function generate_gaji()
+    {
+        $bulan = date('m'); // Ambil bulan sekarang
+        $tahun = date('Y'); // Ambil tahun sekarang
+
+        $users = $this->user->get_all_users();
+
+        foreach ($users as $user) {
+            $gaji_pokok = $this->get_gaji_pokok($user->id_user);
+            $lembur = $this->get_lembur($user->id_user, $bulan, $tahun); // Perhitungan lembur
+
+            $data = [
+                'id_user' => $user->id_user,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'gaji_pokok' => $gaji_pokok,
+                'bonus' => 0, // Anda bisa mengubah logika ini jika Anda memiliki metode perhitungan bonus
+                'potongan' => 0, // Anda bisa mengubah logika ini jika Anda memiliki metode perhitungan potongan
+                'lembur' => $lembur // Menambahkan data lembur ke array data yang akan disimpan
+            ];
+
+            // Cek apakah data sudah ada
+            $existing_data = $this->penggajian->find_by_month_year_user($bulan, $tahun, $user->id_user);
+
+            if ($existing_data) {
+                // Update data yang ada
+                $this->penggajian->update_data($existing_data->id_penggajian, $data);
+            } else {
+                // Tambahkan ke database
+                $this->penggajian->insert_data($data);
+            }
+        }
+
+        redirect('penggajian');
+    }
+
+
+    private function get_gaji_pokok($id_user)
+    {
+        $user = $this->user->find_by('id_user', $id_user, TRUE);
+
+        $divisi = $this->Divisi_Model->find($user->divisi);
+
+        return $divisi->gaji_pokok;
+    }
+
+    private function get_lembur($id_user, $bulan, $tahun)
+    {
+        $jam_lembur = $this->penggajian->get_jam_lembur($id_user, $bulan, $tahun);
+
+        $honor_per_jam = $this->get_honor_lembur_by_user($id_user);
+
+        $total_lembur = $jam_lembur * $honor_per_jam;
+
+        return $total_lembur;
+    }
+
+    private function get_honor_lembur_by_user($id_user)
+    {
+        $user = $this->user->find_by('id_user', $id_user, TRUE);
+
+        $this->load->model('Divisi_Model');
+        $divisi = $this->Divisi_Model->find($user->divisi);
+
+        return $divisi->honor_lembur;
     }
 }

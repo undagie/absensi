@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Penggajian</title>
+    <title>Laporan Rekapitulasi Presensi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,19 +71,13 @@
         <h2>Komplek Sidomulyo Raya III, Jl. Mawar Blok E.7, Kel. Landasan Ulin Timur, Kec. Landasan Ulin, Kota Banjarbaru</h2>
     </div>
 
-    <h3 style="text-align:center;">LAPORAN PENGGAJIAN KARYAWAN</h3>
+    <h3 style="text-align:center;">LAPORAN REKAPITULASI PRESENSI</h3>
 
     <?php
     if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
         $bulan = $_GET['bulan'];
         $tahun = $_GET['tahun'];
         echo "<h4 style='text-align:center;'>Bulan: " . date('F', mktime(0, 0, 0, $bulan, 1)) . " Tahun: $tahun</h4>";
-    }
-
-    $total_gaji = 0;
-    $jumlah_karyawan = count($penggajian);
-    foreach ($penggajian as $p) {
-        $total_gaji += $p->total_gaji;
     }
     ?>
 
@@ -92,33 +86,23 @@
             <tr>
                 <th>No</th>
                 <th>Nama Karyawan</th>
-                <th>Divisi</th>
-                <th>Tanggal Penggajian</th>
-                <th>Detail Gaji</th>
-                <th>Total Gaji</th>
+                <th>Jumlah Kehadiran</th>
+                <th>Jumlah Terlambat</th>
+                <th>Jumlah Ketidakhadiran</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($penggajian as $i => $p) : ?>
+            <?php foreach ($rekapitulasi as $i => $data) : ?>
                 <tr>
                     <td><?= $i + 1 ?></td>
-                    <td><?= $p->nama ?></td>
-                    <td><?= $p->nama_divisi ?></td>
-                    <td><?= $p->bulan . '-' . $p->tahun ?></td>
-                    <td>
-                        Gaji Pokok: Rp <?= number_format($p->gaji_pokok, 0, ',', '.') ?> <br>
-                        Bonus: Rp <?= number_format($p->bonus, 0, ',', '.') ?> <br>
-                        Potongan: Rp <?= number_format($p->potongan, 0, ',', '.') ?>
-                    </td>
-                    <td>Rp <?= number_format($p->total_gaji, 0, ',', '.') ?></td>
+                    <td><?= $data['nama'] ?></td>
+                    <td><?= $data['hadir'] ?></td>
+                    <td><?= $data['terlambat'] ?></td>
+                    <td><?= $data['tidak_hadir'] ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <p style="text-align:left; font-weight:bold;">Total Penggajian: Rp <?= number_format($total_gaji, 0, ',', '.') ?></p>
-    <p style="text-align:left; font-weight:bold;">Jumlah Karyawan: <?= $jumlah_karyawan ?></p>
-
     <div class="footer">
         <div class="signature">
             <div class="position">Direktur</div>

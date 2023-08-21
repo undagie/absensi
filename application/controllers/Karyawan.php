@@ -61,6 +61,7 @@ class Karyawan extends CI_Controller
     public function edit()
     {
         $id_user = $this->uri->segment(3);
+        $data['divisi'] = $this->user->get_all_divisi();
         $data['karyawan'] = $this->karyawan->find($id_user);
         return $this->template->load('template', 'karyawan/edit', $data);
     }

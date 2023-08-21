@@ -57,6 +57,10 @@ class Absensi extends CI_Controller
         $now = date('H:i:s');
         $data['absen'] = $this->absensi->absen_harian_user($this->session->id_user)->num_rows();
 
+        // Menambahkan data jam masuk dan jam pulang
+        $data['jam_masuk'] = $this->jam->get_jam('Masuk')->start;
+        $data['jam_pulang'] = $this->jam->get_jam('Pulang')->start;
+
         $absen_harian = $this->absensi->absen_harian_user($this->session->id_user)->result();
         $sudah_absen_masuk = false;
         $sudah_absen_pulang = false;
@@ -74,6 +78,7 @@ class Absensi extends CI_Controller
 
         return $this->template->load('template', 'absensi/absen', $data);
     }
+
 
     public function absen()
     {
@@ -122,173 +127,23 @@ class Absensi extends CI_Controller
         $this->pdf->stream($filename, array("Attachment" => false));
     }
 
-    public function export_excel()
+    public function rekapabsensi()
     {
-        include_once APPPATH . 'third_party/PHPExcel.php';
-        $data = $this->detail_data_absen();
-        $hari = $data['hari'];
-        $absen = $data['absen'];
-        $excel = new PHPExcel();
+        $bulan = $this->input->get('bulan', TRUE) ? $this->input->get('bulan', TRUE) : date('m');
+        $tahun = $this->input->get('tahun', TRUE) ? $this->input->get('tahun', TRUE) : date('Y');
 
-        $excel->getProperties()
-            ->setCreator('IndoExpress')
-            ->setLastModifiedBy('IndoExpress')
-            ->setTitle('Data Absensi')
-            ->setSubject('Absensi')
-            ->setDescription('Absensi' . $data['karyawan']->nama . ' bulan ' . bulan($data['bulan']) . ', ' . $data['tahun'])
-            ->setKeyWords('data absen');
+        $data['rekapitulasi'] = $this->absensi->getRekapitulasi($bulan, $tahun);
 
-        $style_col = [
-            'font' => ['bold' => true],
-            'alignment' => [
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            ],
-            'borders' => [
-                'top' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'bottom' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'right' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'left' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-            ]
-        ];
+        return $this->template->load('template', 'absensi/rekapitulasi', $data);
+    }
 
-        $style_row = [
-            'alignment' => [
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            ],
-            'borders' => [
-                'top' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'bottom' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'right' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'left' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-            ]
-        ];
+    public function print_rekapitulasi()
+    {
+        $bulan = $this->input->get('bulan');
+        $tahun = $this->input->get('tahun');
 
-        $style_row_libur = [
-            'fill' => [
-                'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => ['rgb' => '343A40']
-            ],
-            'font' => [
-                'color' => ['rgb' => 'FFFFFF']
-            ],
-            'alignment' => [
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            ],
-            'borders' => [
-                'top' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'bottom' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'right' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'left' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-            ]
-        ];
+        $data['rekapitulasi'] = $this->absensi->getRekapitulasi($bulan, $tahun);
 
-        $style_row_tidak_masuk = [
-            'fill' => [
-                'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => ['rgb' => 'DC3545']
-            ],
-            'font' => [
-                'color' => ['rgb' => 'FFFFFF']
-            ],
-            'alignment' => [
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            ],
-            'borders' => [
-                'top' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'bottom' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'right' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-                'left' => ['style' => PHPExcel_Style_Border::BORDER_THIN],
-            ]
-        ];
-
-        $style_telat = [
-            'font' => [
-                'color' => ['rgb' => 'DC3545']
-            ]
-        ];
-
-        $style_lembur = [
-            'font' => [
-                'color' => ['rgb' => '28A745']
-            ]
-        ];
-
-        $excel->setActiveSheetIndex(0)->setCellValue('A1', 'Nama : ' . $data['karyawan']->nama);
-        $excel->getActiveSheet()->mergeCells('A1:D1');
-        $excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-        $excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
-
-        $excel->setActiveSheetIndex(0)->setCellValue('A2', 'Divisi : ' . $data['karyawan']->nama_divisi);
-        $excel->getActiveSheet()->mergeCells('A2:D2');
-        $excel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
-        $excel->getActiveSheet()->getStyle('A2')->getFont()->setSize(12);
-
-        $excel->setActiveSheetIndex(0)->setCellValue('A3', '');
-        $excel->getActiveSheet()->mergeCells('A3:D3');
-
-        $excel->setActiveSheetIndex(0)->setCellValue('A4', 'Data Absensi Bulan ' . bulan($data['bulan']) . ', ' . $data['tahun']);
-        $excel->getActiveSheet()->mergeCells('A4:D4');
-        $excel->getActiveSheet()->getStyle('A4')->getFont()->setBold(true);
-        $excel->getActiveSheet()->getStyle('A4')->getFont()->setSize(12);
-
-        $excel->setActiveSheetIndex(0)->setCellValue('A5', 'NO');
-        $excel->setActiveSheetIndex(0)->setCellValue('B5', 'Tanggal');
-        $excel->setActiveSheetIndex(0)->setCellValue('C5', 'Jam Masuk');
-        $excel->setActiveSheetIndex(0)->setCellValue('D5', 'Jam Keluar');
-
-        $excel->getActiveSheet()->getStyle('A5')->applyFromArray($style_col);
-        $excel->getActiveSheet()->getStyle('B5')->applyFromArray($style_col);
-        $excel->getActiveSheet()->getStyle('C5')->applyFromArray($style_col);
-        $excel->getActiveSheet()->getStyle('D5')->applyFromArray($style_col);
-
-        $numrow = 6;
-        foreach ($hari as $i => $h) {
-            $absen_harian = array_search($h['tgl'], array_column($absen, 'tgl')) !== false ? $absen[array_search($h['tgl'], array_column($absen, 'tgl'))] : '';
-
-            $excel->setActiveSheetIndex(0)->setCellValue('A' . $numrow, ($i + 1));
-            $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $h['hari'] . ', ' . $h['tgl']);
-            $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_masuk'], 'masuk', true)['text']);
-            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, is_weekend($h['tgl']) ? 'Libur Akhir Pekan' : check_jam(@$absen_harian['jam_pulang'], 'pulang', true)['text']);
-
-            if (check_jam(@$absen_harian['jam_masuk'], 'masuk', true)['status'] == 'telat') {
-                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_telat);
-            }
-
-            if (check_jam(@$absen_harian['jam_pulang'], 'pulang', true)['status'] == 'lembur') {
-                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_lembur);
-            }
-
-            if (is_weekend($h['tgl'])) {
-                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row_libur);
-                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row_libur);
-            } elseif ($absen_harian == '') {
-                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row_tidak_masuk);
-                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row_tidak_masuk);
-            } else {
-                $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
-            }
-            $numrow++;
-        }
-
-        $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
-        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
-        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(25);
-        $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="Absensi ' . $data['karyawan']->nama . ' - ' . bulan($data['bulan']) . ' ' . $data['tahun'] . '.xlsx"'); // Set nama file excel nya
-        header('Cache-Control: max-age=0');
-
-        $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-        $write->save('php://output');
+        $this->load->view('absensi/report_rekapitulasi', $data);
     }
 }

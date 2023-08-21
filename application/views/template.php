@@ -47,7 +47,7 @@
                     </li>
                     <li class="nav-item <?= @$_active ?>">
                         <a class="nav-link" href="<?= base_url() ?>">
-                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <i class="nc-icon nc-bank"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
@@ -70,7 +70,7 @@
                                 <p>Divisi</p>
                             </a>
                         </li>
-                        <li class="nav-item <?= @$_active ?>">
+                        <li class="nav-tabs <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('karyawan') ?>">
                                 <i class="nc-icon nc-circle-09"></i>
                                 <p>Karyawan</p>
@@ -78,13 +78,13 @@
                         </li>
                         <li class="nav-item <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('absensi') ?>">
-                                <i class="nc-icon nc-notes"></i>
+                                <i class="nc-icon nc-tag-content"></i>
                                 <p>Presensi</p>
                             </a>
                         </li>
                         <li class="nav-tabs <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('penggajian') ?>">
-                                <i class="nc-icon nc-notes"></i>
+                                <i class="nc-icon nc-money-coins"></i>
                                 <p>Penggajian</p>
                             </a>
                         </li>
@@ -107,21 +107,21 @@
                             </a>
                         </li>
                         <li class="nav-item <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('rekapabsensi') ?>">
-                                <i class="nc-icon nc-notes"></i>
+                            <a class="nav-link" href="<?= base_url('absensi/rekapabsensi') ?>">
+                                <i class="nc-icon nc-paper-2"></i>
                                 <p>Rekap Presensi</p>
                             </a>
                         </li>
                         <li class="nav-item <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('rekapjamkerja') ?>">
-                                <i class="nc-icon nc-notes"></i>
+                                <i class="nc-icon nc-credit-card"></i>
                                 <p>Rekap Jam Kerja</p>
                             </a>
                         </li>
                     <?php else : ?>
                         <li class="nav-item <?= @$_active ?>">
                             <a class="nav-link" href="<?= base_url('absensi/check_absen') ?>">
-                                <i class="nc-icon nc-tag-content"></i>
+                                <i class="nc-icon nc-watch-time"></i>
                                 <p class="d-inline">
                                     Presensi
                                     <?php if ($this->session->absen_warning == 'true') : ?>
@@ -149,7 +149,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class=" container-fluid">
-                    <a class="navbar-brand" href="#pablo"> Presensi & Penggajian Karyawan</a>
+                    <a class="navbar-brand" href="#"> Sistem Informasi Presensi dan Penggajian Karyawan Pada PT Indico Youth Indonesia</a>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>

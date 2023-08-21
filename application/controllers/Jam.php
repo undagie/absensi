@@ -48,7 +48,3 @@ class Jam extends CI_Controller
         echo json_encode($response);
     }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\Jam.php */

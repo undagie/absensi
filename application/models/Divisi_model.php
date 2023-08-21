@@ -45,6 +45,3 @@ class Divisi_model extends CI_Model
         return $result;
     }
 }
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\models\Divisi_model.php */

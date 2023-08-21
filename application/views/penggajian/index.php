@@ -5,6 +5,7 @@
                 <h4 class="card-title float-left">Daftar Penggajian</h4>
                 <div class="d-inline ml-auto float-right">
                     <a href="<?= base_url('penggajian/create') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Penggajian</a>
+                    <button class="btn btn-info ml-2" id="generateGajiBtn"><i class="fa fa-cogs"></i> Generate Penggajian</button>
                 </div>
             </div>
             <div class="card-body">
@@ -13,16 +14,18 @@
                 <form action="<?= base_url('penggajian') ?>" method="GET" class="mb-4">
                     <div class="row">
                         <div class="col-md-5">
+                            <?php $selectedBulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m'); ?>
                             <select name="bulan" class="form-control">
                                 <?php for ($i = 1; $i <= 12; $i++) : ?>
-                                    <option value="<?= $i ?>"><?= date('F', mktime(0, 0, 0, $i, 1, 2000)) ?></option>
+                                    <option value="<?= $i ?>" <?= ($i == $selectedBulan) ? 'selected' : '' ?>><?= date('F', mktime(0, 0, 0, $i, 1, 2000)) ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
                         <div class="col-md-5">
+                            <?php $selectedTahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y'); ?>
                             <select name="tahun" class="form-control">
                                 <?php for ($i = date('Y'); $i >= date('Y') - 10; $i--) : ?>
-                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                    <option value="<?= $i ?>" <?= ($i == $selectedTahun) ? 'selected' : '' ?>><?= $i ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
@@ -68,8 +71,8 @@
                                     </td>
                                     <td>Rp <?= number_format($p->total_gaji, 0, ',', '.') ?></td>
                                     <td>
-                                        <a href="<?= base_url('penggajian/edit/' . $p->id_penggajian) ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="<?= base_url('penggajian/destroy/' . $p->id_penggajian) ?>" class="btn btn-danger btn-sm btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
+                                        <a href="<?= base_url('penggajian/edit/' . $p->id_penggajian) ?>" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?= base_url('penggajian/destroy/' . $p->id_penggajian) ?>" class="btn btn-danger btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -80,3 +83,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('generateGajiBtn').addEventListener('click', function() {
+        swal({
+            title: "Apakah Anda yakin?",
+            text: "Ini akan meng-generate penggajian untuk semua pegawai!",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Batal",
+                    value: null,
+                    visible: true,
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Ya, generate!",
+                    value: true,
+                    visible: true,
+                    closeModal: true
+                }
+            }
+        }).then((value) => {
+            if (value) {
+                window.location.href = "<?= base_url('penggajian/generate_gaji') ?>";
+            }
+        });
+    });
+</script>

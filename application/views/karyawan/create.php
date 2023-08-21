@@ -74,6 +74,7 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-save"></i></button>
+                    <a href="javascript:history.back()" class="btn btn-secondary pull-right"><i class="fa fa-arrow-left"></i> Batal</a>
                 </div>
             </form>
         </div>

@@ -34,6 +34,14 @@ class Penggajian_model extends CI_Model
         return $this->db->where('id_penggajian', $id)->update($this->table, $data);
     }
 
+    public function find_by_month_year_user($bulan, $tahun, $id_user)
+    {
+        $this->db->where('bulan', $bulan);
+        $this->db->where('tahun', $tahun);
+        $this->db->where('id_user', $id_user);
+        return $this->db->get($this->table)->row();
+    }
+
     public function delete_data($id)
     {
         return $this->db->where('id_penggajian', $id)->delete($this->table);
@@ -68,5 +76,16 @@ class Penggajian_model extends CI_Model
 
         //echo $this->db->last_query();
         //exit;
+    }
+
+    public function get_jam_lembur($id_user, $bulan, $tahun)
+    {
+        $this->db->select_sum('jam_lembur');
+        $this->db->where('id_user', $id_user);
+        $this->db->where('bulan', $bulan);
+        $this->db->where('tahun', $tahun);
+        $result = $this->db->get('lembur')->row();
+
+        return $result->jam_lembur ? $result->jam_lembur : 0;
     }
 }

@@ -41,8 +41,8 @@
                                         </address>
                                     </td>
                                     <td>
-                                        <a href="<?= base_url('karyawan/edit/' . $k->id_user) ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="<?= base_url('karyawan/destroy/' . $k->id_user) ?>" class="btn btn-danger btn-sm btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
+                                        <a href="<?= base_url('karyawan/edit/' . $k->id_user) ?>" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?= base_url('karyawan/destroy/' . $k->id_user) ?>" class="btn btn-danger btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

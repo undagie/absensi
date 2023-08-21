@@ -22,8 +22,19 @@ class Jam_model extends CI_Model
         $result = $this->db->update('jam', $data);
         return $result;
     }
+
+    public function get_jam($keterangan)
+    {
+        $this->db->where('keterangan', $keterangan);
+        $query = $this->db->get('jam');
+        return $query->row();
+    }
+
+    public function sudah_absen($user_id, $keterangan)
+    {
+        $this->db->where('user_id', $user_id);
+        $this->db->where('keterangan', $keterangan);
+        $query = $this->db->get('absensi');
+        return $query->num_rows() > 0;
+    }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\Jam_model.php */

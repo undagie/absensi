@@ -9,7 +9,7 @@
                 <!-- Form Filter -->
                 <form action="<?= base_url('penggajian/cetakpenggajian') ?>" method="GET" id="filterForm">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <select name="bulan" class="form-control">
                                     <?php for ($i = 1; $i <= 12; $i++) : ?>
@@ -18,7 +18,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <select name="tahun" class="form-control">
                                     <?php for ($i = date('Y'); $i >= date('Y') - 10; $i--) : ?>
@@ -27,10 +27,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div>
-                                <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter</button>
-                                <button type="button" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Cetak</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
+                                <button type="button" class="btn btn-primary" id="btnPrint"><i class="fa fa-print"></i> Cetak</button>
                             </div>
                         </div>
                     </div>

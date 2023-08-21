@@ -9,7 +9,7 @@
                 <!-- Form Filter -->
                 <form method="get" action="<?= base_url('user/cetakkaryawan') ?>" id="filterForm">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <label for="divisi">Filter Divisi:</label>
                                 <select class="form-control" name="divisi" id="divisi">
@@ -22,7 +22,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-2 mt-4">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter</button>
                                 <a href="<?= base_url('user/print_report') ?>" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Cetak</a>

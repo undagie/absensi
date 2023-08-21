@@ -9,6 +9,7 @@
                     <thead>
                         <th>No</th>
                         <th>Karyawan</th>
+                        <th>Divisi</th>
                         <th>Aksi</th>
                     </thead>
                     <tbody>
@@ -16,8 +17,9 @@
                             <tr>
                                 <td><?= ($i + 1) ?></td>
                                 <td><?= $k->nama ?></td>
+                                <td>Div. <?= $k->nama_divisi ?></td>
                                 <td>
-                                    <a href="<?= base_url('absensi/detail_absensi/' . $k->id_user) ?>" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Detail</a>
+                                    <a href="<?= base_url('absensi/detail_absensi/' . $k->id_user) ?>" class="btn btn-primary"><i class="fa fa-search"></i> Detail</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

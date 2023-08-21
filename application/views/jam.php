@@ -23,7 +23,7 @@
                                     <td class="jam-start"><?= $j->start ?></td>
                                     <td class="jam-finish"><?= $j->finish ?></td>
                                     <td>
-                                        <a href="#" class="btn btn-primary btn-sm btn-edit-jam" data-toggle="modal" data-target="#edit-jam" data-jam="<?= base64_encode(json_encode($j)) ?>"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="#" class="btn btn-primary btn-edit-jam" data-toggle="modal" data-target="#edit-jam" data-jam="<?= base64_encode(json_encode($j)) ?>"><i class="fa fa-edit"></i> Edit</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -50,12 +50,12 @@
                         <div class="form-group">
                             <label for="start">Jam Mulai :</label>
                             <input type="hidden" name="id_jam" id="edit-id-jam">
-                            <input type="time" name="start" id="edit-start" class="form-control" placeholder="Jam Mulai" required="reuired" />
+                            <input type="time" name="start" id="edit-start" class="form-control" placeholder="Jam Mulai" required="required" />
                         </div>
 
                         <div class="form-group">
                             <label for="finish">Jam Selesai :</label>
-                            <input type="time" name="finish" id="edit-finish" class="form-control" placeholder="Jam Selesai" required="reuired" />
+                            <input type="time" name="finish" id="edit-finish" class="form-control" placeholder="Jam Selesai" required="required" />
                         </div>
                     </div>
                     <div class="modal-footer">

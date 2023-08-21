@@ -13,6 +13,7 @@ class User extends CI_Controller
     public function index()
     {
         $id_user = $this->session->id_user;
+        $data['divisi'] = $this->user->get_all_divisi();
         $data['user'] = $this->user->find_by('id_user', $id_user, true);
         return $this->template->load('template', 'edit_profil', $data);
     }
