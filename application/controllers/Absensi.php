@@ -139,8 +139,8 @@ class Absensi extends CI_Controller
 
     public function print_rekapitulasi()
     {
-        $bulan = $this->input->get('bulan');
-        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan', TRUE) ? $this->input->get('bulan', TRUE) : date('m');
+        $tahun = $this->input->get('tahun', TRUE) ? $this->input->get('tahun', TRUE) : date('Y');
 
         $data['rekapitulasi'] = $this->absensi->getRekapitulasi($bulan, $tahun);
 

@@ -10,14 +10,17 @@ class Penggajian extends CI_Controller
         redirect_if_level_not('Manager');
         $this->load->model('penggajian_model', 'penggajian');
         $this->load->model('User_model', 'user');
-        $this->load->model('Divisi_Model');
+        $this->load->model('Absensi_model');
+        $this->load->model('Lembur_model');
+        $this->load->model('Divisi_model');
+        $this->load->model('Jam_model');
         $this->load->helper('Tanggal');
     }
 
     public function index()
     {
-        $bulan = $this->input->get('bulan');
-        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan', TRUE) ? $this->input->get('bulan', TRUE) : date('m');
+        $tahun = $this->input->get('tahun', TRUE) ? $this->input->get('tahun', TRUE) : date('Y');
 
         if ($bulan && $tahun) {
             $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
@@ -113,8 +116,8 @@ class Penggajian extends CI_Controller
         $this->load->model('User_model');
         $user = $this->User_model->find_by('id_user', $id_user, TRUE);
 
-        $this->load->model('Divisi_Model');
-        $divisi = $this->Divisi_Model->find($user->divisi);
+        $this->load->model('Divisi_model');
+        $divisi = $this->Divisi_model->find($user->divisi);
 
         $response = [
             'success' => true,
@@ -128,8 +131,8 @@ class Penggajian extends CI_Controller
 
     public function cetakpenggajian()
     {
-        $bulan = $this->input->get('bulan');
-        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan', TRUE) ? $this->input->get('bulan', TRUE) : date('m');
+        $tahun = $this->input->get('tahun', TRUE) ? $this->input->get('tahun', TRUE) : date('Y');
 
         if ($bulan && $tahun) {
             $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
@@ -141,8 +144,8 @@ class Penggajian extends CI_Controller
 
     public function print_report()
     {
-        $bulan = $this->input->get('bulan');
-        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan', TRUE) ? $this->input->get('bulan', TRUE) : date('m');
+        $tahun = $this->input->get('tahun', TRUE) ? $this->input->get('tahun', TRUE) : date('Y');
 
         if ($bulan && $tahun) {
             $data['penggajian'] = $this->penggajian->get_by_month_year($bulan, $tahun);
@@ -167,23 +170,23 @@ class Penggajian extends CI_Controller
 
     public function generate_gaji()
     {
-        $bulan = date('m'); // Ambil bulan sekarang
-        $tahun = date('Y'); // Ambil tahun sekarang
+        $bulan = $this->input->get('bulan') ? $this->input->get('bulan') : date('m');
+        $tahun = $this->input->get('tahun') ? $this->input->get('tahun') : date('Y');
 
         $users = $this->user->get_all_users();
 
+        $this->generate_lembur($bulan, $tahun);
+
         foreach ($users as $user) {
-            $gaji_pokok = $this->get_gaji_pokok($user->id_user);
-            $lembur = $this->get_lembur($user->id_user, $bulan, $tahun); // Perhitungan lembur
+            $gaji_pokok = $this->get_gaji_pokok($user->id_user) ?? 0;  // Jika null, gunakan 0
+            $totalLembur = $this->Lembur_model->getTotalLemburForUser($bulan, $tahun, $user->id_user) ?? 0;
 
             $data = [
                 'id_user' => $user->id_user,
                 'bulan' => $bulan,
                 'tahun' => $tahun,
                 'gaji_pokok' => $gaji_pokok,
-                'bonus' => 0, // Anda bisa mengubah logika ini jika Anda memiliki metode perhitungan bonus
-                'potongan' => 0, // Anda bisa mengubah logika ini jika Anda memiliki metode perhitungan potongan
-                'lembur' => $lembur // Menambahkan data lembur ke array data yang akan disimpan
+                'lembur' => $totalLembur // Menambahkan data lembur ke array data yang akan disimpan
             ];
 
             // Cek apakah data sudah ada
@@ -201,12 +204,67 @@ class Penggajian extends CI_Controller
         redirect('penggajian');
     }
 
+    public function generate_lembur($bulan, $tahun)
+    {
+        // Menghitung jumlah hari dalam bulan saat ini
+        $jumlah_hari = date('t', mktime(0, 0, 0, $bulan, 1, $tahun));
+
+        $users = $this->user->get_all_users();
+
+        // Ambil waktu start dan finish untuk 'Masuk' dan 'Pulang' dari tabel jam
+        $jam_masuk = $this->Jam_model->get_jam('Masuk');
+        $jam_pulang = $this->Jam_model->get_jam('Pulang');
+
+        // Loop untuk setiap hari dalam bulan
+        for ($i = 1; $i <= $jumlah_hari; $i++) {
+            $tanggal_iterasi = "$tahun-$bulan-$i";
+
+            foreach ($users as $user) {
+                $absen_masuk = $this->Absensi_model->getAbsenDetail($user->id_user, $tanggal_iterasi, 'Masuk');
+                $absen_pulang = $this->Absensi_model->getAbsenDetail($user->id_user, $tanggal_iterasi, 'Pulang');
+
+                // Validasi absen masuk
+                if ($absen_masuk && $absen_masuk->waktu >= $jam_masuk->start && $absen_masuk->waktu <= $jam_masuk->finish) {
+                    // Validasi absen pulang
+                    if ($absen_pulang && $absen_pulang->waktu > $jam_pulang->finish) {
+                        $waktu_pulang = new DateTime($absen_pulang->waktu);
+                        $waktu_finish = new DateTime($jam_pulang->finish);
+                        $interval = $waktu_finish->diff($waktu_pulang);
+                        $jam_lembur = $interval->h;
+
+                        if ($jam_lembur > 0) {
+                            // Ambil honor lembur dari divisi pengguna
+                            $divisi = $this->Divisi_model->find($user->divisi);
+                            $biaya_lembur = $jam_lembur * $divisi->honor_lembur;
+
+                            $data = [
+                                'id_user' => $user->id_user,
+                                'tanggal' => $tanggal_iterasi,
+                                'jam_lembur' => $jam_lembur,
+                                'bulan' => $bulan,
+                                'tahun' => $tahun,
+                                'biaya' => $biaya_lembur
+                            ];
+
+                            $existing_data = $this->Lembur_model->find_by_date_month_year_user($i, $bulan, $tahun, $user->id_user);
+
+                            if ($existing_data) {
+                                $this->Lembur_model->updateOvertime($existing_data->id_lembur, $data);
+                            } else {
+                                $this->Lembur_model->insertOvertime($data);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private function get_gaji_pokok($id_user)
     {
         $user = $this->user->find_by('id_user', $id_user, TRUE);
 
-        $divisi = $this->Divisi_Model->find($user->divisi);
+        $divisi = $this->Divisi_model->find($user->divisi);
 
         return $divisi->gaji_pokok;
     }
@@ -226,8 +284,8 @@ class Penggajian extends CI_Controller
     {
         $user = $this->user->find_by('id_user', $id_user, TRUE);
 
-        $this->load->model('Divisi_Model');
-        $divisi = $this->Divisi_Model->find($user->divisi);
+        $this->load->model('Divisi_model');
+        $divisi = $this->Divisi_model->find($user->divisi);
 
         return $divisi->honor_lembur;
     }

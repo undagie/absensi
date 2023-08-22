@@ -8,7 +8,7 @@
                 <div class="card-body border-top py-0 my-3">
                     <h4 class="text-muted my-3">Profil</h4>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
                             <input type="hidden" name="id_penggajian" value="<?= htmlspecialchars($penggajian->id_penggajian) ?>">
 
                             <div class="form-group">
@@ -20,18 +20,24 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
                             <div class="form-group">
                                 <label for="bulan">Bulan</label>
                                 <input type="number" name="bulan" id="bulan" value="<?= $penggajian->bulan ?>" class="form-control" pmin="1" max="12" required readonly>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="form-group">
+                                <label for="tahun">Tahun</label>
+                                <input type="number" name="tahun" id="tahun" value="<?= $penggajian->tahun ?>" class="form-control" required readonly>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-4">
                             <div class="form-group">
-                                <label for="tahun">Tahun</label>
-                                <input type="number" name="tahun" id="tahun" value="<?= $penggajian->tahun ?>" class="form-control" required readonly>
+                                <label for="honor_lembur">Honor Lembur</label>
+                                <input type="number" name="honor_lembur" id="honor_lembur" value="<?= $penggajian->lembur ?>" class="form-control" required readonly>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-4">

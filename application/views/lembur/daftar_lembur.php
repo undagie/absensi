@@ -2,14 +2,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header d-block">
-                <h4 class="card-title float-left">Daftar Penggajian</h4>
+                <h4 class="card-title float-left">Daftar Lembur</h4>
+                <div class="d-inline ml-auto float-right">
+                    <button class="btn btn-info ml-2" id="generateLemburBtn"><i class="fa fa-cogs"></i> Generate Lembur</button>
+                </div>
             </div>
             <div class="card-body">
 
                 <!-- Form Filter -->
-                <form action="<?= base_url('penggajian/cetakpenggajian') ?>" method="GET" id="filterForm">
+                <form action="<?= base_url('lembur') ?>" method="GET" class="mb-4">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <?php $selectedBulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m'); ?>
                             <select name="bulan" class="form-control">
                                 <?php for ($i = 1; $i <= 12; $i++) : ?>
@@ -17,7 +20,7 @@
                                 <?php endfor; ?>
                             </select>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <?php $selectedTahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y'); ?>
                             <select name="tahun" class="form-control">
                                 <?php for ($i = date('Y'); $i >= date('Y') - 10; $i--) : ?>
@@ -32,46 +35,34 @@
                     </div>
                 </form>
 
-                <!-- Tabel Penggajian -->
+                <!-- Tabel Lembur -->
                 <div class="table-responsive">
                     <table class="table table-striped datatable">
                         <thead>
                             <th>No</th>
                             <th width="30%">Nama Karyawan</th>
-                            <th>Tanggal Penggajian</th>
-                            <th>Detail Gaji</th>
-                            <th>Total Gaji</th>
-                            <th>Aksi</th>
+                            <th>Tanggal Lembur</th>
+                            <th>Jam Lembur</th>
+                            <th>Honor Lembur</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($penggajian as $i => $p) : ?>
+                            <?php foreach ($lembur as $i => $l) : ?>
                                 <tr>
                                     <td><?= $i + 1 ?></td>
                                     <td>
                                         <div class="row">
                                             <div class="col-4">
-                                                <img src="<?= base_url('assets/img/profil/' . $p->foto) ?>" alt="Gambar Pengguna" class="img-thumbnail rounded-circle w-50">
+                                                <img src="<?= base_url('assets/img/profil/' . $l->foto) ?>" alt="Gambar Pengguna" class="img-thumbnail rounded-circle w-50">
                                             </div>
                                             <div class="col-8">
-                                                <span class="font-weight-bold"><?= $p->nama ?></span> <br>
-                                                <span class="text-muted">Div. <?= $p->nama_divisi ?></span>
+                                                <span class="font-weight-bold"><?= $l->nama ?></span> <br>
+                                                <span class="text-muted">Div. <?= $l->nama_divisi ?></span>
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?= $p->bulan . '-' . $p->tahun ?></td>
-                                    <td>
-                                        <address>
-                                            Gaji Pokok: Rp <?= number_format($p->gaji_pokok, 0, ',', '.') ?> <br>
-                                            Bonus: Rp <?= number_format($p->bonus, 0, ',', '.') ?> <br>
-                                            Potongan: Rp <?= number_format($p->potongan, 0, ',', '.') ?> <br>
-                                        </address>
-                                    </td>
-                                    <td>Rp <?= number_format($p->total_gaji, 0, ',', '.') ?></td>
-                                    <td>
-                                        <a href="<?= base_url('penggajian/cetak_slip_gaji/' . $p->id_penggajian) ?>" class="btn btn-secondary" target="_blank">
-                                            <i class="fa fa-print"></i> Cetak Slip Gaji
-                                        </a>
-                                    </td>
+                                    <td><?= $l->tanggal ?></td>
+                                    <td><?= $l->jam_lembur ?> jam</td>
+                                    <td>Rp <?= number_format($l->biaya, 0, ',', '.') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -83,13 +74,44 @@
 </div>
 
 <script>
+    document.getElementById('generateLemburBtn').addEventListener('click', function() {
+        let bulan = document.querySelector('select[name="bulan"]').value;
+        let tahun = document.querySelector('select[name="tahun"]').value;
+
+        swal({
+            title: "Apakah Anda yakin?",
+            text: "Ini akan meng-generate lembur untuk semua pegawai!",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Batal",
+                    value: null,
+                    visible: true,
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Ya, generate!",
+                    value: true,
+                    visible: true,
+                    closeModal: true
+                }
+            }
+        }).then((value) => {
+            if (value) {
+                window.location.href = `<?= base_url('lembur/generate_lembur') ?>?bulan=${bulan}&tahun=${tahun}`;
+            }
+        });
+    });
+</script>
+
+<script>
     document.getElementById('btnPrint').addEventListener('click', function() {
         // Mendapatkan value dari dropdown bulan dan tahun
         var bulan = document.querySelector("[name='bulan']").value;
         var tahun = document.querySelector("[name='tahun']").value;
 
         // Membuat URL baru berdasarkan filter
-        var url = "<?= base_url('penggajian/print_report') ?>?bulan=" + bulan + "&tahun=" + tahun;
+        var url = "<?= base_url('lembur/print_report') ?>?bulan=" + bulan + "&tahun=" + tahun;
 
         // Mengarahkan halaman ke URL cetak dengan filter
         window.location.href = url;

@@ -101,7 +101,7 @@
                             </a>
                         </li>
                         <li class="nav-tabs <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('daftarlembur') ?>">
+                            <a class="nav-link" href="<?= base_url('lembur') ?>">
                                 <i class="nc-icon nc-notes"></i>
                                 <p>Daftar Lembur</p>
                             </a>
@@ -113,9 +113,9 @@
                             </a>
                         </li>
                         <li class="nav-item <?= @$_active ?>">
-                            <a class="nav-link" href="<?= base_url('rekapjamkerja') ?>">
+                            <a class="nav-link" href="<?= base_url('lembur/rekaplembur') ?>">
                                 <i class="nc-icon nc-credit-card"></i>
-                                <p>Rekap Jam Kerja</p>
+                                <p>Rekap Lembur</p>
                             </a>
                         </li>
                     <?php else : ?>
@@ -238,7 +238,8 @@
             const gajiPokok = parseFloat($('#gaji_pokok').val()) || 0;
             const bonus = parseFloat($('#bonus').val()) || 0;
             const potongan = parseFloat($('#potongan').val()) || 0;
-            $('#total_gaji').val(gajiPokok + bonus - potongan);
+            const honor_lembur = parseFloat($('#honor_lembur').val()) || 0;
+            $('#total_gaji').val(gajiPokok + bonus + honor_lembur - potongan);
         }
 
         $('#bonus, #potongan').on('input', calculateTotal);

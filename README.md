@@ -11,6 +11,7 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 
 ## Teknologi yang Digunakan
 
+- PHP v7 ke atas
 - CodeIgniter
 - MySQL
 
@@ -25,13 +26,15 @@ Aplikasi Presensi adalah solusi modern untuk mengelola kehadiran siswa atau kary
 5. Konfigurasikan basis data
 6. Jalankan localhost/absensi/
 
-
 ## Login
+
 Manajer:
+
 - Username: junaidi
 - Password: junaidi
 
 Karyawan:
+
 - Username: mila
 - Password: mila
 

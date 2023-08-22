@@ -4,7 +4,7 @@
             <div class="card-header d-block">
                 <h4 class="card-title float-left">Daftar Penggajian</h4>
                 <div class="d-inline ml-auto float-right">
-                    <a href="<?= base_url('penggajian/create') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Penggajian</a>
+                    <!-- <a href="<?= base_url('penggajian/create') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Penggajian</a> -->
                     <button class="btn btn-info ml-2" id="generateGajiBtn"><i class="fa fa-cogs"></i> Generate Penggajian</button>
                 </div>
             </div>
@@ -65,6 +65,7 @@
                                     <td>
                                         <address>
                                             Gaji Pokok: Rp <?= number_format($p->gaji_pokok, 0, ',', '.') ?> <br>
+                                            Honor Lembur: Rp <?= number_format($p->lembur, 0, ',', '.') ?> <br>
                                             Bonus: Rp <?= number_format($p->bonus, 0, ',', '.') ?> <br>
                                             Potongan: Rp <?= number_format($p->potongan, 0, ',', '.') ?> <br>
                                         </address>
@@ -86,6 +87,9 @@
 
 <script>
     document.getElementById('generateGajiBtn').addEventListener('click', function() {
+        let bulan = document.querySelector('select[name="bulan"]').value;
+        let tahun = document.querySelector('select[name="tahun"]').value;
+
         swal({
             title: "Apakah Anda yakin?",
             text: "Ini akan meng-generate penggajian untuk semua pegawai!",
@@ -106,7 +110,7 @@
             }
         }).then((value) => {
             if (value) {
-                window.location.href = "<?= base_url('penggajian/generate_gaji') ?>";
+                window.location.href = `<?= base_url('penggajian/generate_gaji') ?>?bulan=${bulan}&tahun=${tahun}`;
             }
         });
     });

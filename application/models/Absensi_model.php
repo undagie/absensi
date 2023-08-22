@@ -16,8 +16,6 @@ class Absensi_model extends CI_Model
         return $result->result_array();
     }
 
-
-
     public function absen_harian_user($id_user)
     {
         $today = date('Y-m-d');
@@ -39,6 +37,15 @@ class Absensi_model extends CI_Model
         $this->db->or_where('finish', $time, '>=');
         $data = $this->db->get('jam');
         return $data->row();
+    }
+
+    public function getAbsenDetail($id_user, $tgl, $keterangan)
+    {
+        $this->db->where('id_user', $id_user);
+        $this->db->where('tgl', $tgl);
+        $this->db->where('keterangan', $keterangan);
+        $query = $this->db->get('absensi');
+        return $query->row();  // Mengembalikan satu baris
     }
 
     public function getRekapitulasi($bulan, $tahun)

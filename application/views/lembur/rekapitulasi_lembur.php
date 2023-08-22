@@ -2,12 +2,12 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header d-block">
-                <h4 class="card-title float-left">Daftar Penggajian</h4>
+                <h4 class="card-title float-left">Rekapitulasi Honor Lembur</h4>
             </div>
             <div class="card-body">
 
                 <!-- Form Filter -->
-                <form action="<?= base_url('penggajian/cetakpenggajian') ?>" method="GET" id="filterForm">
+                <form action="<?= base_url('lembur/rekaplembur') ?>" method="GET" class="mb-4">
                     <div class="row">
                         <div class="col-md-5">
                             <?php $selectedBulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m'); ?>
@@ -32,46 +32,22 @@
                     </div>
                 </form>
 
-                <!-- Tabel Penggajian -->
+                <!-- Tabel Rekapitulasi Honor Lembur -->
                 <div class="table-responsive">
                     <table class="table table-striped datatable">
                         <thead>
-                            <th>No</th>
-                            <th width="30%">Nama Karyawan</th>
-                            <th>Tanggal Penggajian</th>
-                            <th>Detail Gaji</th>
-                            <th>Total Gaji</th>
-                            <th>Aksi</th>
+                            <tr>
+                                <th>NIK</th>
+                                <th>Nama Karyawan</th>
+                                <th>Total Honor Lembur</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($penggajian as $i => $p) : ?>
+                            <?php foreach ($rekapitulasi as $rek) : ?>
                                 <tr>
-                                    <td><?= $i + 1 ?></td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <img src="<?= base_url('assets/img/profil/' . $p->foto) ?>" alt="Gambar Pengguna" class="img-thumbnail rounded-circle w-50">
-                                            </div>
-                                            <div class="col-8">
-                                                <span class="font-weight-bold"><?= $p->nama ?></span> <br>
-                                                <span class="text-muted">Div. <?= $p->nama_divisi ?></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><?= $p->bulan . '-' . $p->tahun ?></td>
-                                    <td>
-                                        <address>
-                                            Gaji Pokok: Rp <?= number_format($p->gaji_pokok, 0, ',', '.') ?> <br>
-                                            Bonus: Rp <?= number_format($p->bonus, 0, ',', '.') ?> <br>
-                                            Potongan: Rp <?= number_format($p->potongan, 0, ',', '.') ?> <br>
-                                        </address>
-                                    </td>
-                                    <td>Rp <?= number_format($p->total_gaji, 0, ',', '.') ?></td>
-                                    <td>
-                                        <a href="<?= base_url('penggajian/cetak_slip_gaji/' . $p->id_penggajian) ?>" class="btn btn-secondary" target="_blank">
-                                            <i class="fa fa-print"></i> Cetak Slip Gaji
-                                        </a>
-                                    </td>
+                                    <td><?= $rek->nik; ?></td>
+                                    <td><?= $rek->nama; ?></td>
+                                    <td>Rp <?= number_format($rek->total_honor, 0, ',', '.'); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -89,7 +65,7 @@
         var tahun = document.querySelector("[name='tahun']").value;
 
         // Membuat URL baru berdasarkan filter
-        var url = "<?= base_url('penggajian/print_report') ?>?bulan=" + bulan + "&tahun=" + tahun;
+        var url = "<?= base_url('lembur/print_rekapitulasi') ?>?bulan=" + bulan + "&tahun=" + tahun;
 
         // Mengarahkan halaman ke URL cetak dengan filter
         window.location.href = url;
