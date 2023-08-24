@@ -67,7 +67,7 @@
         // Membuat URL baru berdasarkan filter
         var url = "<?= base_url('lembur/print_rekapitulasi') ?>?bulan=" + bulan + "&tahun=" + tahun;
 
-        // Mengarahkan halaman ke URL cetak dengan filter
-        window.location.href = url;
+        // Membuka URL di tab baru
+        window.open(url, '_blank');
     });
 </script>

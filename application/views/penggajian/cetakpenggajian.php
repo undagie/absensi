@@ -62,6 +62,7 @@
                                     <td>
                                         <address>
                                             Gaji Pokok: Rp <?= number_format($p->gaji_pokok, 0, ',', '.') ?> <br>
+                                            Honor Lembur: Rp <?= number_format($p->lembur, 0, ',', '.') ?> <br>
                                             Bonus: Rp <?= number_format($p->bonus, 0, ',', '.') ?> <br>
                                             Potongan: Rp <?= number_format($p->potongan, 0, ',', '.') ?> <br>
                                         </address>
@@ -91,7 +92,7 @@
         // Membuat URL baru berdasarkan filter
         var url = "<?= base_url('penggajian/print_report') ?>?bulan=" + bulan + "&tahun=" + tahun;
 
-        // Mengarahkan halaman ke URL cetak dengan filter
-        window.location.href = url;
+        // Membuka URL di tab baru
+        window.open(url, '_blank');
     });
 </script>

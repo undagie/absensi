@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or die('No direct script access allowed!');
+defined('BASEPATH') or die('No direct script access allowed');
 
 class Divisi extends CI_Controller
 {
@@ -22,7 +22,8 @@ class Divisi extends CI_Controller
         $post = $this->input->post();
         $data = [
             'nama_divisi' => $post['nama_divisi'],
-            'gaji_pokok' => $post['gaji_pokok']
+            'gaji_pokok' => $post['gaji_pokok'],
+            'honor_lembur' => $post['honor_lembur'] // Menambahkan field honor_lembur
         ];
         $result = $this->divisi->insert_data($data);
         if ($result) {
@@ -47,6 +48,7 @@ class Divisi extends CI_Controller
             'id_divisi' => $post['id_divisi'],
             'nama_divisi' => $post['nama_divisi'],
             'gaji_pokok' => $post['gaji_pokok'],
+            'honor_lembur' => $post['honor_lembur'] // Menambahkan field honor_lembur
         ];
 
         $result = $this->divisi->update_data($post['id_divisi'], $data);
@@ -91,7 +93,3 @@ class Divisi extends CI_Controller
         echo json_encode($response);
     }
 }
-
-
-
-/* End of File: d:\Ampps\www\project\absen-pegawai\application\controllers\Divisi.php */

@@ -49,7 +49,7 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-4 pr-1">
-                                                <img src="<?= base_url('assets/img/profil/' . $k->foto) ?>" alt="Img Profil" class="img-thumbnail rounded-circle w-100">
+                                                <img src="<?= base_url('assets/img/profil/' . $k->foto) ?>" alt="Img Profil" class="img-thumbnail rounded-circle w-50">
                                             </div>
                                             <div class="col-8 pl-1 mt-3">
                                                 <span class="font-weight-bold"><?= $k->nama ?></span><br>

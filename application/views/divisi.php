@@ -14,6 +14,7 @@
                             <th>No.</th>
                             <th>Nama Divisi</th>
                             <th>Gaji Pokok</th>
+                            <th>Honor Lembur</th> <!-- Kolom baru -->
                             <th>Aksi</th>
                         </thead>
                         <tbody id="tbody-divisi">
@@ -22,6 +23,7 @@
                                     <td><?= ($i + 1) ?></td>
                                     <td class="nama-divisi"><?= $d->nama_divisi ?></td>
                                     <td class="gaji-pokok">Rp <?= number_format($d->gaji_pokok, 0, ',', '.') ?></td>
+                                    <td class="honor-lembur">Rp <?= number_format($d->honor_lembur, 0, ',', '.') ?></td> <!-- Kolom baru -->
                                     <td style="width: 20%;">
                                         <a href="#" class="btn btn-primary btn-edit-divisi" data-toggle="modal" data-target="#modal-edit-divisi" data-divisi="<?= base64_encode(json_encode($d)) ?>"><i class="fa fa-edit"></i> Edit</a>
                                         <a href="<?= base_url('divisi/destroy/' . $d->id_divisi) ?>" class="btn btn-danger btn-delete ml-2" onclick="return false"><i class="fa fa-trash"></i> Hapus</a>
@@ -49,11 +51,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nama-divisi">Nama Divisi:</label>
-                        <input type="text" name="nama_divisi" id="nama-divisi" class="form-control" placeholder="Nama Divisi" required="reuired" />
+                        <input type="text" name="nama_divisi" id="nama-divisi" class="form-control" placeholder="Nama Divisi" required="required" />
                     </div>
                     <div class="form-group">
-                        <label for="nama-divisi">Gaji Pokok:</label>
-                        <input type="text" name="gaji_pokok" id="gaji-pokok" class="form-control" placeholder="Gaji Pokok" required="reuired" />
+                        <label for="gaji-pokok">Gaji Pokok:</label>
+                        <input type="text" name="gaji_pokok" id="gaji-pokok" class="form-control" placeholder="Gaji Pokok" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="honor-lembur">Honor Lembur:</label>
+                        <input type="text" name="honor_lembur" id="honor-lembur" class="form-control" placeholder="Honor Lembur" required="required" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -79,11 +85,15 @@
                     <div class="form-group">
                         <label for="edit-nama-divisi">Nama Divisi:</label>
                         <input type="hidden" name="id_divisi" id="edit-id-divisi">
-                        <input type="text" name="nama_divisi" id="edit-nama-divisi" class="form-control" placeholder="Nama Divisi" required="reuired" />
+                        <input type="text" name="nama_divisi" id="edit-nama-divisi" class="form-control" placeholder="Nama Divisi" required="required" />
                     </div>
                     <div class="form-group">
-                        <label for="nama-divisi">Gaji Pokok:</label>
-                        <input type="text" name="gaji_pokok" id="gaji-pokok" class="form-control" placeholder="Gaji Pokok" required="reuired" />
+                        <label for="edit-gaji-pokok">Gaji Pokok:</label>
+                        <input type="text" name="gaji_pokok" id="edit-gaji-pokok" class="form-control" placeholder="Gaji Pokok" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-honor-lembur">Honor Lembur:</label>
+                        <input type="text" name="honor_lembur" id="edit-honor-lembur" class="form-control" placeholder="Honor Lembur" required="required" />
                     </div>
                 </div>
                 <div class="modal-footer">

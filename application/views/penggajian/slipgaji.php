@@ -98,6 +98,10 @@
             <td>Rp <?= number_format($penggajian->gaji_pokok, 0, ',', '.') ?></td>
         </tr>
         <tr>
+            <td>Honor Lembur</td>
+            <td>Rp <?= number_format($penggajian->lembur, 0, ',', '.') ?></td>
+        </tr>
+        <tr>
             <td>Bonus</td>
             <td>Rp <?= number_format($penggajian->bonus, 0, ',', '.') ?></td>
         </tr>

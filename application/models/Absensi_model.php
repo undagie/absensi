@@ -50,24 +50,26 @@ class Absensi_model extends CI_Model
 
     public function getRekapitulasi($bulan, $tahun)
     {
-
         $totalDays = date('t', mktime(0, 0, 0, $bulan, 1, $tahun));
-
+        $currentDayOfMonth = date('j');
+        $currentMonth = date('m');
+        $currentYear = date('Y');
         $weekdayCount = 0;
 
+        // Menghitung jumlah hari kerja dalam bulan ini hingga hari ini
         for ($day = 1; $day <= $totalDays; $day++) {
             $currentDay = mktime(0, 0, 0, $bulan, $day, $tahun);
             $weekday = date('N', $currentDay); // 1 (Senin) to 7 (Minggu)
 
-            if ($weekday >= 1 && $weekday <= 5) {
-                $weekdayCount++;
+            if (($currentYear == $tahun && $currentMonth == $bulan && $day <= $currentDayOfMonth) || ($currentYear == $tahun && $currentMonth < $bulan) || ($currentYear < $tahun)) {
+                if ($weekday >= 1 && $weekday <= 5) { // Senin sampai Jumat
+                    $weekdayCount++;
+                }
             }
         }
 
-        $this->db->select('u.nama,
-        COUNT(DISTINCT case when a.keterangan="Masuk" AND (SELECT j1.start FROM jam j1 WHERE j1.keterangan = "Masuk") <= a.waktu AND a.waktu <= (SELECT j2.finish FROM jam j2 WHERE j2.keterangan = "Pulang") then a.tgl end) as hadir,
-        COUNT(DISTINCT case when a.keterangan="Masuk" AND a.waktu > (SELECT j1.finish FROM jam j1 WHERE j1.keterangan = "Masuk") then a.tgl end) as terlambat,
-        COUNT(DISTINCT case when a.id_absen is null then 1 end) as tidak_hadir');
+        // Query Anda
+        $this->db->select('u.nama, COUNT(DISTINCT case when a.keterangan="Masuk" AND (SELECT j1.start FROM jam j1 WHERE j1.keterangan = "Masuk") <= a.waktu AND a.waktu <= (SELECT j2.finish FROM jam j2 WHERE j2.keterangan = "Pulang") then a.tgl end) as hadir, COUNT(DISTINCT case when a.keterangan="Masuk" AND a.waktu > (SELECT j1.finish FROM jam j1 WHERE j1.keterangan = "Masuk") then a.tgl end) as terlambat, COUNT(DISTINCT case when a.id_absen is null then 1 end) as tidak_hadir');
 
         $this->db->from('users u');
         $this->db->join('absensi a', 'u.id_user = a.id_user', 'left');
@@ -76,12 +78,14 @@ class Absensi_model extends CI_Model
         $this->db->group_by('u.nama');
 
         $query = $this->db->get();
-        $result =  $query->result_array();
+        $result = $query->result_array();
 
         foreach ($result as $key => $value) {
             $result[$key]['tidak_hadir'] = $weekdayCount - ($value['hadir'] + $value['terlambat']);
+            if ($result[$key]['tidak_hadir'] < 0) {
+                $result[$key]['tidak_hadir'] = 0;  // Memastikan bahwa 'tidak_hadir' tidak menjadi negatif
+            }
         }
-
 
         return $result;
     }

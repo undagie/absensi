@@ -122,6 +122,8 @@ $(document).ready(function() {
 
         $('#edit-id-divisi').val(dataDivisi.id_divisi);
         $('#edit-nama-divisi').val(dataDivisi.nama_divisi);
+        $('#edit-gaji-pokok').val(dataDivisi.gaji_pokok);
+        $('#edit-honor-lembur').val(dataDivisi.honor_lembur);
     });
 
     $('#form-edit-divisi').submit(function() {
@@ -133,7 +135,10 @@ $(document).ready(function() {
         console.log(dataReturn);
         let targetParent = $('tr#divisi-' + dataReturn.id_divisi);
         targetParent.find('.nama-divisi').text(dataReturn.nama_divisi);
+        targetParent.find('.gaji-pokok').text(dataReturn.gaji_pokok);
+        targetParent.find('.honor-lembur').text(dataReturn.honor_lembur);
         $('#modal-edit-divisi').modal('hide');
+        location.reload();
     });
 
     $('body').on('click', '.btn-delete', function() {
